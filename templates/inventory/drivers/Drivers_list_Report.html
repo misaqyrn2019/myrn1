@@ -1,0 +1,67 @@
+{% extends 'Template/base.html' %}
+{% load humanize %}
+
+{% block title %}{% block title-meta %}
+	راننده ها
+{% endblock %}{% endblock %}
+
+{% block Css %}
+    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+    <style type="text/css">
+    *{
+        direction:rtl;
+    }
+    .SPNName{
+        color:rgb(71, 67, 67);
+        text-decoration: underline;
+    }
+    @media print{
+        button,h2,.main-footer{
+            display: none !important;
+        }
+    }
+    </style>
+{% endblock %}
+{% block JS %}
+    <!-- <script type="text/javascript">
+        window.onload = print();
+    </script> -->
+{% endblock %}
+{% block main %}
+{% if object_list %}
+    <table class="table table-report">
+        <thead>
+            <th colspan="9">لیست راننده ها</th>
+        </thead>
+        <tr>
+            <th>شناسه راننده</th>
+            <th>نام</th>
+            <th>فامیل</th>
+            <th>شماره باربری</th>
+            <th>شماره همراه</th>
+            <th>کد ملی</th>
+            <th>شماره پلاک</th>
+            <th>نوع ماشین</th>
+            <th>توضیحات</th>
+        </tr>
+    {% for item in object_list %}
+        <tr>
+            <td>{{item.DriverCode}}</td>
+            <td>{{item.Name}}</td>
+            <td>{{item.Family}}</td>
+            <td>{{item.FreightName}}</td>
+            <td>{{item.Telephone}}</td>
+            <td>{{item.NationalCode}}</td>
+            <td>{{item.LicensePlateNumber}}</td>
+            <td>{{item.CarType}}</td>
+            <td>{{item.Description|safe}}</td>
+        </tr>
+    {% empty %}
+        <h2 style="text-align: center;">هنوز مشتری ثبت نشده است</h2>
+    {% endfor %}
+</table>
+{% else %}
+    <h2 style="text-align: center;">هنوز مشتری ثبت نشده است</h2>
+{% endif %}
+<button onclick="print()" class="btn btn-info">پرینت گزارش</button>
+{% endblock %}

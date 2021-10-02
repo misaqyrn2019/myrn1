@@ -1,0 +1,84 @@
+{% extends 'Template/base.html' %}
+
+
+{% block title %}{% block title-meta %}
+	مشتری ها
+{% endblock %}{% endblock %}
+
+{% block Create %}
+    <a class="badge text-primary" href="{% url 'inventory:Customer-Create' %}">تعریف مشتری</a>
+{% endblock %}
+
+
+{% block main %}
+    {% if object_list %}
+    <div style="min-height:200px;">
+        <div class="row text-center">
+            <div class="col-sm-1"><b>کدمشتری</b></div>
+            <div class="col-sm-1"><b>نام</b></div>
+            <div class="col-sm-1"><b>نام خانوادگی</b></div>
+            <div class="col-sm-1"><b>شماره تلفن</b></div>
+            <div class="col-sm-1"><b>شماره همراه</b></div>
+            <div class="col-sm-1"><b>کدملی/شماره اقتصادی</b></div>
+            <div class="col-sm-1"><b>مانده اول دوره</b></div>
+            <div class="col-sm-1"><b>بستانکار/بدهکار</b></div>
+            <div class="col-sm-2"><b>آدرس</b></div>
+            <div class="col-sm-1"><b>کدپستی</b></div>
+            <div class="col-sm-1"><b>عملیات</b></div>
+        </div>
+        {% for item in object_list %}
+            <div class="row text-center">
+                <div class="col-sm-1">{{item.AccountSideCode}}</div>
+                <div class="col-sm-1">{{item.Name}}</div>
+                <div class="col-sm-1">{{item.Family}}</div>
+                <div class="col-sm-1">{{item.TelephoneCustomer}}</div>
+                <div class="col-sm-1">{{item.Mobile}}</div>
+                <div class="col-sm-1">{{item.EconomicNumber}}</div>
+                <div class="col-sm-1">{{item.FirstBalanceCourse}}</div>
+                {% if item.Status == "A" %}
+                    <div class="col-sm-1">بی حساب</div>
+                {% elif item.Status == "B" %}
+                    <div class="col-sm-1">بدهکار</div>
+                {% elif item.Status == "C" %}
+                    <div class="col-sm-1">بستانکار</div>
+                {% endif %}
+                <div class="col-sm-2">{{item.Address|safe}}</div>
+                <div class="col-sm-1">{{item.PostalCode}}</div>
+                <div class="col-sm-1">
+                    {% if user.is_superuser or user.is_storekeeper %}
+                    <a class="badge text-danger" href="{% url 'inventory:Customer-Delete' item.pk %}">حذف</a>
+                    <a class="badge text-succsess" href="{% url 'inventory:Customer-update' item.pk %}">ویرایش</a>
+                    {% endif %}
+                </div>
+                <div class="offset-4"></div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'inventory:homeCU' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'inventory:homeCU' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            لیست مشتری خالی است
+            <br>
+            <a href="{% url 'inventory:Customer-Create' %}">
+                تعریف مشتری
+            </a>
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

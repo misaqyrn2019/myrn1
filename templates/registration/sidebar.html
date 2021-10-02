@@ -1,0 +1,136 @@
+{% load static %}
+{% load base_tags %}
+{% load gravatar %}
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="../" class="brand-link">
+      <img src="{% static 'registration/adminlte/assets/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text" style="font-size: 15px;">برنامه ریزی منابع سازمانی</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{% gravatar_url user.email 150 %}" class="img-circle elevation-2" alt="{{user.email}}">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">
+            {% if user.get_full_name %}
+              {{user.get_full_name}}
+            {% else %}
+              {{user.username}}
+            {% endif %}
+          </a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          {% if user.is_superuser or user.is_author %}
+            {% if 'account' in request.resolver_match.route %}
+              <li class="nav-item has-treeview menu-open">
+              <a href="#" class="nav-link active">
+            {% else %}
+              <li class="nav-item has-treeview menu-close">
+              <a href="#" class="nav-link">
+            {% endif %}
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  مقالات
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  {% link request 'account' 'home' 'لیست مقالات' 'fa-list' %}
+                </li>
+                <li class="nav-item">
+                  {% link request 'account' 'article-create' 'افزودن مقاله' 'fa-edit' %}
+                </li>
+              </ul>
+            </li>
+          {% endif %}
+          {% if user.is_superuser or user.is_storekeeper %}
+            {% if 'inventory' in request.resolver_match.route %}
+              <li class="nav-item has-treeview menu-open">
+              <a href="#" class="nav-link active">
+            {% else %}
+              <li class="nav-item has-treeview menu-close">
+              <a href="#" class="nav-link">
+            {% endif %}
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                انبارداری
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                {% link request 'inventory' 'homeCU' 'تعریف مشتری' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeSL' 'لیست انبار' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeGC' 'لیست دسته' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeCC' 'لیست گروه' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeUP' 'لیست بسته' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeSU' 'لیست تامین کننده' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeUM' 'لیست واحدسنجش' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeCO' 'لیست اقلام انبار' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeDL' 'لیست راننده' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeTP' 'لیست حمل و نقل' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeEC' 'ورود کالا' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homePR' 'تعمیر کالا' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeTB' 'نقل و انتقال' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeRE' 'فاکتور خرید/فروش' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeSA' 'تسویه فاکتور' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homePPR' 'درخواست خرید' 'fa-list' %}
+              </li>
+            </ul>
+          </li>
+          
+        {% endif %}
+          <li class="nav-item">
+            {% link request 'account' 'profile' 'پروفایل' 'fas fa-th' %}
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

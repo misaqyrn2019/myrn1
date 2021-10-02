@@ -1,0 +1,51 @@
+{% extends 'Template/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% block title-meta %}
+	ثبت حمل و نقل
+{% endblock %}{% endblock %}
+
+{% block main %}
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title mb-0 float-left">افزودن حمل و نقل</h3>
+		</div>
+		<div class="card-body">
+			<form method="post" enctype="multipart/form-data">{% csrf_token %}
+				<div class="row">
+					<div class="col-4">
+						{{ form.IdDrivers|as_crispy_field }}
+					</div>
+					<div class="col-4">
+						{{ form.Sender|as_crispy_field }}
+					</div>
+					<div class="col-4">
+						{{ form.Transferee|as_crispy_field }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-4">
+						{{ form.FreightNumber|as_crispy_field }}
+					</div>
+					<div class="col-4">
+						{{ form.SourceAddress|as_crispy_field }}
+					</div>
+					<div class="col-4">
+						{{ form.IdEntryCommodity|as_crispy_field }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						{{ form.Description|as_crispy_field }}
+					</div>
+					
+				</div>
+				<button class="btn btn-success">ثبت حمل و نقل</button>
+				{% if user.is_superuser and item.pk %}
+				<a class="badge text-danger" href="{% url 'inventory:Transportation-Delete' item.pk %}">حذف</a>
+				{% endif %}
+			</form>
+		</div>
+</div>
+{% endblock %}

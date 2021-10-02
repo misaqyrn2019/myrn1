@@ -1,0 +1,25 @@
+{% extends 'Template/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block main %}
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title mb-0 float-left">افزودن واحدسنجش</h3>
+		</div>
+		<div class="card-body">
+			<form method="post" enctype="multipart/form-data">{% csrf_token %}
+				<div class="row">
+					<div class="col-4">
+						{{ form.Name|as_crispy_field }}
+					</div>
+				</div>
+				<button class="btn btn-success">ثبت واحدسنجش</button>
+				{% if user.is_superuser and item.pk %}
+				<a class="badge text-danger" href="{% url 'inventory:UnitofMeasurement-Delete' item.pk %}">حذف</a>
+				{% endif %}
+			</form>
+		</div>
+</div>
+{% endblock %}

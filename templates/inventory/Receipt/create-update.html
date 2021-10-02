@@ -1,0 +1,52 @@
+{% extends 'Template/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title mb-0 float-left">تعریف فاکتور</h3>
+		</div>
+		<div class="card-body">
+			<form method="post" enctype="multipart/form-data">{% csrf_token %}
+				<div class="row">
+					<div class="col-4">
+						{{ form.IdCommodity|as_crispy_field }}
+					</div>
+					<div class="col-4">
+						{{ form.IdUnitofMeasurement|as_crispy_field }}
+					</div>
+					<div class="col-4">
+						{{ form.Count|as_crispy_field }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-4">
+						{{ form.Amount|as_crispy_field }}
+					</div>
+					<div class="col-4">
+						{{ form.Discount|as_crispy_field }}
+					</div>
+					<div class="col-4">
+						{{ form.Taxation|as_crispy_field }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-4">
+						{{ form.Type|as_crispy_field }}
+					</div>
+					<div class="col-4">
+						{{ form.IdCustomer|as_crispy_field }}
+					</div>
+					<div class="col-4">
+						{{ form.IdStoreroom|as_crispy_field }}
+					</div>
+				</div>
+				<button class="btn btn-success">ثبت فاکتور</button>
+				{% if user.is_superuser and item.pk %}
+				<a class="badge text-danger" href="{% url 'inventory:Receipt-Delete' item.pk %}">حذف</a>
+				{% endif %}
+			</form>
+		</div>
+</div>
+{% endblock %}

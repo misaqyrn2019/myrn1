@@ -1,0 +1,65 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+	لیست پروژه ها
+{% endblock %}{% endblock %}
+
+
+{% block Create %}
+    <span class="badge text-primary"">لیست پروژه ها</span>
+{% endblock %}
+
+{% block main %}
+    {% if object_list %}
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>نام پروژه</th>
+                <th>شهر</div>
+                <th>نوع پروژه</th>
+                <th>توضیحات</th>
+                <th>ثبت درخواست</th>
+            </tr>
+        </thead>
+        {% for item in object_list %}
+        <tbody>
+            <tr>
+                <td data-label="نام پروژه">{{item.Name}}</td>
+                <td data-label="شهر">{{item.IdCity}}</td>
+                <td data-label="نوع پروژه">{{item.IdTypeProject}}</td>
+                <td data-label="توضیحات">{{item.Description|safe}}</td>
+                <td data-label="ثبت درخواست">
+                    <a class="badge text-succsess" href="{% url 'FacilitiesWelfare:Projects-Reg-User' item.pk %}">ثبت درخواست</a>
+                </td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeUFPR' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeUFPR' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            لیست پروژه ها خالی است
+            <br>
+            <a href="{% url 'FacilitiesWelfare:CreateUFPR' %}">
+                تعریف پروژه
+            </a>
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

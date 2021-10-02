@@ -1,0 +1,66 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+مسافرت ها
+{% endblock %}{% endblock %}
+
+{% block Create %}
+<span class="badge text-primary">مسافرت</span>
+{% endblock %}
+
+{% block main %}
+    {% if object_list %}
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>شهر</th>
+                <th>تاریخ شروع</th>
+                <th>تاریخ پایان</th>
+                <th>نوع مسافرت</th>
+                <th>توضیحات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="شهر">{{item.IdCity}}</td>
+                    <td data-label="تاریخ شروع">{{item.jStartDateTime}}</td>
+                    <td data-label="تاریخ پایان">{{item.jEndDateTime}}</td>
+                    <td data-label="نوع مسافرت">
+                        {% if item.status == "s" %}
+                            <p>سیاحتی</p>
+                        {% elif item.status == "z" %}
+                            <p>زیارتی</p>
+                        {% elif item.status == "m" %}
+                            <p>ماموریت کاری</p>
+                        {% endif %}
+                    </td>
+                    <td data-label="توضیحات">{{item.Description|safe}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeFwT' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeFwT' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            مسافرت های شما خالی است
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

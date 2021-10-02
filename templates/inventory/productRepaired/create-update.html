@@ -1,0 +1,46 @@
+{% extends 'Template/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block main %}
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title mb-0 float-left">افزودن تعمیر کالا</h3>
+		</div>
+		<div class="card-body">
+			<form method="post" enctype="multipart/form-data">{% csrf_token %}
+				<div class="row">
+					<div class="col-2">
+						{{ form.IdCommodity|as_crispy_field }}
+					</div>
+					<div class="col-2">
+						{{ form.IdCustomer|as_crispy_field }}
+					</div>
+					<div class="col-2">
+						{{ form.IdStoreroom|as_crispy_field }}
+					</div>
+					<div class="col-2">
+						{{ form.SerialNumber|as_crispy_field }}
+					</div>
+					<div class="col-2">
+						{{ form.DateDelivery|as_crispy_field }}
+					</div>
+					<div class="col-2">
+						{{form.Status|as_crispy_field}}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						{{ form.Description|as_crispy_field }}
+					</div>
+				</div>
+				
+				<button class="btn btn-success">ثبت تعمیر کالا</button>
+				{% if user.is_superuser and item.pk %}
+				<a class="badge text-danger" href="{% url 'inventory:productRepaired-Delete' item.pk %}">حذف</a>
+				{% endif %}
+			</form>
+		</div>
+</div>
+{% endblock %}

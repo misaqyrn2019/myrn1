@@ -1,0 +1,81 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+	کمک بلاعوض
+{% endblock %}{% endblock %}
+
+{% block Create %}
+    <a class="badge text-primary" href="{% url 'FacilitiesWelfare:CreateFH' %}">تعریف کمک بلاعوض</a>
+{% endblock %}
+
+{% block main %}
+    {% if object_list %}
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>عنوان</th>
+                <th>نوع</th>
+                <th>تاریخ ثبت</th>
+                <th>کاربر</th>
+                <th>مبلغ</th>
+                <th>توضیحات</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="عنوان">{{item.Title}}</td>
+                    <td data-label="نوع">
+                        {% if item.TypeAssistance == "MA" %}
+                            <div>ازدواج</div>
+                        {% elif item.TypeAssistance == "BG" %}
+                            <div>هدیه تولد</div>
+                            {% elif item.TypeAssistance == "NC" %}
+                            <div>فرزند جدید</div>
+                            {% elif item.TypeAssistance == "AN" %}
+                            <div>غیره</div>
+                        {% endif %}
+                    </td>
+                    <td data-label="تاریخ ثبت">{{item.jDateRegister}}</td>
+                    <td data-label="کاربر">{{item.IdUser}}</td>
+                    <td data-label="مبلغ">{{item.HPrice}}</td>
+                    <td data-label="توضیحات">{{item.Description|safe}}</td>
+                    <td data-label="عملیات">
+                        {% if user.is_superuser or user.is_FacilitiesWelfare %}
+                        <a class="badge text-danger" href="{% url 'FacilitiesWelfare:FreeHelp-Delete' item.pk %}">حذف</a>
+                        <a class="badge text-succsess" href="{% url 'FacilitiesWelfare:FreeHelp-update' item.pk %}">ویرایش</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeFH' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeFH' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            کمک های بلاعوض خالی است
+            <br>
+            <a href="{% url 'FacilitiesWelfare:CreateFH' %}">
+                تعریف کمک بلاعوض جدید
+            </a>
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'Template/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block main %}
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title mb-0 float-left">افزودن بسته</h3>
+		</div>
+		<div class="card-body">
+			<form method="post" enctype="multipart/form-data">{% csrf_token %}
+				<div class="row">
+					<div class="col-3">
+						{{ form.IdCommodity|as_crispy_field }}
+						<a href="{% url 'inventory:Commodity-Create' %}">ثبت جنس/کالا</a>
+					</div>
+					<div class="col-3">
+						{{ form.IdUnitofMeasurement|as_crispy_field }}
+						<a href="{% url 'inventory:UnitofMeasurement-Create' %}">ثبت واحد/سنجش</a>
+					</div>
+					<div class="col-3">
+						{{ form.Count|as_crispy_field }}
+					</div>
+					<div class="col-3">
+						{{ form.DateRequired|as_crispy_field }}
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-3">
+						{{ form.IdStoreroom|as_crispy_field }}
+						<a href="{% url 'inventory:Create' %}">ثبت انبار</a>
+					</div>
+					<div class="col-3">
+						{{ form.PurchaseSource|as_crispy_field }}
+						<!-- <a href="{% url 'inventory:Supplier-Create' %}" -->
+					</div>
+					<div class="col-3">
+						{{ form.PurchasingOfficer|as_crispy_field }}
+					</div>
+					<div class="col-3">
+						{{ form.Status|as_crispy_field }}
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-12">
+						{{ form.TechnicalSpecifications|as_crispy_field }}
+					</div>
+				</div>
+				<button class="btn btn-success">ثبت بسته</button>
+				{% if user.is_superuser and item.pk %}
+				<a class="badge text-danger" href="{% url 'inventory:PurchaseRequest-Delete' item.pk %}">حذف</a>
+				{% endif %}
+			</form>
+		</div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'Template/base.html' %}
+
+
+{% block title %}{% block title-meta %}
+	لیست دسته
+{% endblock %}{% endblock %}
+
+{% block Create %}
+    <a class="badge text-primary" href="{% url 'inventory:GroupCommodity-Create' %}">تعریف دسته</a>
+{% endblock %}
+
+
+{% block main %}
+    {% if object_list %}
+    <div style="min-height:200px;">
+        <div class="row text-center">
+            <div class="col-sm-2"><b>ردیف</b></div>
+            <div class="col-sm-4"><b>نام دسته</b></div>
+            <div class="col-sm-2"><b>عملیات</b></div>
+            <div class="offset-4"></div>
+        </div>
+        {% for item in object_list %}
+            <div class="row text-center">
+                <div class="col-sm-2">{{item.Id}}</div>
+                <div class="col-sm-4">{{item.Name}}</div>
+                <div class="col-sm-2">
+                    {% if user.is_superuser or user.is_storekeeper %}
+                    <a class="badge text-danger" href="{% url 'inventory:GroupCommodity-Delete' item.pk %}">حذف</a>
+                    <a class="badge text-succsess" href="{% url 'inventory:GroupCommodity-update' item.pk %}">ویرایش</a>
+                    {% endif %}
+                </div>
+                <div class="offset-4"></div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'inventory:homeGC' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'inventory:homeGC' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            لیست دسته خالی است
+            <br>
+            <a href="{% url 'inventory:GroupCommodity-Create' %}">
+                تعریف دسته
+            </a>
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'Template/base.html' %}
+{% load humanize %}
+
+{% block title %}{% block title-meta %}
+ {{ECName}} کالا
+{% endblock %}{% endblock %}
+
+{% block Css %}
+    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+    <style type="text/css">
+    *{
+        direction:rtl;
+    }
+    .SPNName{
+        color:rgb(71, 67, 67);
+        text-decoration: underline;
+    }
+    @media print{
+        button,h2,.main-footer{
+            display: none !important;
+        }
+    }
+    </style>
+{% endblock %}
+{% block JS %}
+    <!-- <script type="text/javascript">
+        window.onload = print();
+    </script> -->
+{% endblock %}
+{% block main %}
+{% if EntryCommodityPerStoreroom %}
+    <table class="table table-report">
+        <thead>
+            <th colspan="8">{{ECName}} کالا</th>
+        </thead>
+        <tr>
+            <td>ردیف</td>
+            <td>نام کالا</td>
+            <td>تعداد</td>
+            <td>نام انبار</td>
+            <td>نام مشتری</td>
+            <td>تاریخ ورود</td>
+            <td>تاریخ انقضا</td>
+            <td>سریال</td>
+            <td>شماره فاکتور</td>
+            <td>توضیحات</td>
+        </tr>
+    {% for item in EntryCommodityPerStoreroom %}
+        <tr>
+            <td>{{item.Id}}</td>
+            <td>{{item.IdCommodity}}</td>
+            <td>{{item.Count}}</td>
+            <td>{{item.IdStoreroom}}</td>
+            <td>{{item.IdCustomer}}</td>
+            <td>{{item.jDateEntry}}</td>
+            <td>{{item.jDateExpired}}</td>
+            <td>{{item.Serial}}</td>
+            <td>{{item.InvoiceNumber}}</td>
+            <td>{{item.Description|safe}}</td>
+        </tr>
+    {% empty %}
+        <h2 style="text-align: center;">هنوز کالایی برای این انبار وارد نشده است</h2>
+    {% endfor %}
+</table>
+{% else %}
+    <h2 style="text-align: center;">هنوز کالایی برای این انبار وارد نشده است</h2>
+{% endif %}
+<button onclick="print()" class="btn btn-info">پرینت گزارش</button>
+{% endblock %}

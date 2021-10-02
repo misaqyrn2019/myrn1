@@ -1,0 +1,258 @@
+{% load static %}
+{% load base_tags %}
+{% load gravatar %}
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="../" class="brand-link">
+      <img src="{% static 'registration/adminlte/assets/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text" style="font-size: 15px;">برنامه ریزی منابع سازمانی</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{% gravatar_url user.email 150 %}" class="img-circle elevation-2" alt="{{user.email}}">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">
+            {% if user.get_full_name %}
+              {{user.get_full_name}}
+            {% else %}
+              {{user.username}}
+            {% endif %}
+          </a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          {% if user.is_superuser or user.is_author %}
+            {% if 'account' in request.resolver_match.route %}
+              <li class="nav-item has-treeview menu-open">
+              <a href="#" class="nav-link active">
+            {% else %}
+              <li class="nav-item has-treeview menu-close">
+              <a href="#" class="nav-link">
+            {% endif %}
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  مقالات
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  {% link request 'account' 'home' 'لیست مقالات' 'fa-list' %}
+                </li>
+                <li class="nav-item">
+                  {% link request 'account' 'article-create' 'افزودن مقاله' 'fa-edit' %}
+                </li>
+              </ul>
+            </li>
+          {% endif %}
+          {% if user.is_superuser or user.is_storekeeper %}
+            {% if 'inventory' in request.resolver_match.route %}
+              <li class="nav-item has-treeview menu-open">
+              <a href="#" class="nav-link active">
+            {% else %}
+              <li class="nav-item has-treeview menu-close">
+              <a href="#" class="nav-link">
+            {% endif %}
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                انبارداری
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                {% link request 'inventory' 'Dashboard' 'داشبورد' 'fa-tachometer' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeCU' 'تعریف مشتری' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeSL' 'انبارها' 'fa-university' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeGC' 'دسته بندی انبار' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeCC' 'گروه بندی انبار' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeUP' 'لیست بسته' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeSU' 'تامین کننده کالا' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeUM' 'واحدهای سنجش' 'fa-list' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeCO' 'لیست جنس/کالا' 'fa-barcode' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeDL' 'لیست راننده' 'fa-users' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeTP' 'لیست حمل و نقل' 'fa-bus' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeEC' 'ورود کالا' 'fa-recycle' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homePR' 'تعمیر کالا' 'fa-building' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeRE' 'فاکتور خرید/فروش' 'fa-list-alt' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homeSA' 'تسویه فاکتور' 'fa-list-ul' %}
+              </li>
+              <li class="nav-item">
+                {% link request 'inventory' 'homePPR' 'درخواست خرید' 'fa-shopping-cart' %}
+              </li>
+            </ul>
+          </li>
+          
+        {% endif %}
+
+        {% if user.is_superuser or user.is_FacilitiesWelfare %}
+        {% if 'FacilitiesWelfare' in request.resolver_match.route %}
+          <li class="nav-item has-treeview menu-open">
+          <a href="#" class="nav-link active">
+        {% else %}
+          <li class="nav-item has-treeview menu-close">
+          <a href="#" class="nav-link">
+        {% endif %}
+          <i class="nav-icon fas fa-tachometer-alt"></i>
+          <p>
+            تسهیلات خدمات و رفاهی
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeTFPR' 'نوع پروژه ها' 'fa-edit' %}            
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeFPR' 'لیست پروژه ها' 'fa-edit' %}
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeRPR' 'درخواست های پروژه' 'fa-sign-language' %}
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeFwR' 'پاداش ها' 'fa-trophy' %}
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeFwT' 'مسافرت ها' 'fa-taxi' %}
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeRDS' 'خدمات فوت' 'fa-user-circle' %}
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeFwL' 'وام ها' 'fa-university' %}
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeOH' 'خانه سازمانی' 'fa-home' %}
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeROH' 'درخواست های خانه سازمانی' 'fa-window-restore' %}
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeSAV' 'دید و بازدید از بیماران' 'fa-users' %}
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeCA' 'کمک های معیشتی نقدی' 'fa-credit-card' %}
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeCI' 'اقلام مصرفی' 'fa-compass' %}
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeCIR' 'درخواست های اقلام مصرفی' 'fa-compass' %}
+          </li>
+          <li class="nav-item">
+            {% link request 'FacilitiesWelfare' 'homeFH' 'کمک بلاعوض' 'fa-sign-language' %}
+          </li>
+        </ul>
+      </li>
+      
+    {% endif %}
+        {% if user.is_active %}
+        {% if 'FacilitiesWelfare' in request.resolver_match.route %}
+          <li class="nav-item has-treeview menu-open">
+          <a href="#" class="nav-link active">
+        {% else %}
+          <li class="nav-item has-treeview menu-close">
+          <a href="#" class="nav-link">
+        {% endif %}
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              خدمات و تسهیلات
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'OrganizationalHouse-List-All' 'خانه های سازمانی' 'fa-edit' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'OrganizationalHouse-LST-User' 'درخواست های خانه سازمانی' 'fa-edit' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'homeUFPR' 'پروژه ها' 'fa-edit' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'Projects-User' 'درخواست های پروژه' 'fa-edit' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'Reward-List-User' 'پاداش' 'fa-trophy' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'SeeAndVisit-List-User' 'دید و بازدید' 'fa-users' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'RelativesDeathServices-List-User' 'خدمات فوت' 'fa-user-circle' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'Travels-List-User' 'مسافرت' 'fa-taxi' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'CashAssistance-List-User' 'کمک معیشتی نقدی' 'fa-credit-card' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'FreeHelp-List-User' 'کمک بلاعوض' 'fa-sign-language' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'ConsumerItemsRegister-List-User' 'اقلام مصرفی' 'fa-compass' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'ConsumerItems-List-User' 'درخواست اقلام مصرفی' 'fa-edit' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'Loan-List-User' 'لیست وام ها' 'fa-university' %}
+            </li>
+            <li class="nav-item">
+              {% link request 'FacilitiesWelfare' 'Loan-List-User2' 'لیست وام های ثبت شده' 'fa-university' %}
+            </li>
+          </ul>
+          </li>
+          <li class="nav-item">
+            {% link request 'account' 'profile' 'پروفایل' 'fas fa-th' %}
+          </li>
+        {% endif %}
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

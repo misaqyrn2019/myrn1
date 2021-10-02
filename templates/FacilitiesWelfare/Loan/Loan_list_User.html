@@ -1,0 +1,81 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+	لیست وام ها
+{% endblock %}{% endblock %}
+
+
+{% block Create %}
+    <a class="badge text-primary">لیست وام های قابل درخواست</a>
+{% endblock %}
+
+{% block main %}
+    {% if object_list %}
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>عنوان</th>
+                <th>نوع وام</th>
+                <th>تاریخ شروع</th>
+                <th>تاریخ پایان</th>
+                <th>مبلغ کل</th>
+                <th>تعداد اقساط</th>
+                <th>مبلغ قسط</th>
+                <th>سود وام</th>
+                <th>ثبت درخواست</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+            <tr>
+                <td data-label="عنوان">{{item.Title}}</td>
+                <td data-label="نوع وام">
+                    {% if item.status == 'S' %}
+                        <div>کوتاه مدت</div>
+                    {% elif item.status == 'L' %}
+                        <div>بلند مدت</div>
+                    {% elif item.status == 'm' %}
+                        <div>مساعده مالی</div>
+                    {% endif %}
+                </td>
+                <td data-label="تاریخ شروع">{{item.jStartDateTime}}</td>
+                <td data-label="تاریخ پایان">{{item.jEndDateTime}}</td>
+                <td data-label="مبلغ کل">{{item.HTotalAmount}} ریال</td>
+                <td data-label="تعداد اقساط">{{item.NumberInstallment}}</td>
+                <td data-label="مبلغ قسط">{{item.HInstallmentAmount}} ریال</td>
+                <td data-label="سود وام">{{item.LoanInterest}}</td>
+                <td data-label="ثبت درخواست">
+                    <a class="badge text-info" href="{% url 'FacilitiesWelfare:Loan-Reg-User' item.pk %}">ثبت درخواست</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeFwL' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeFwL' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            لیست وام خالی است
+            <br>
+            <a href="{% url 'FacilitiesWelfare:CreateFwL' %}">
+                تعریف وام جدید
+            </a>
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

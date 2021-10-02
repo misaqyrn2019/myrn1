@@ -1,0 +1,35 @@
+{% extends 'Template/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% block title-meta %}
+	ایجاد اقلام مصرفی
+{% endblock %}{% endblock %}
+
+{% block main %}
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title mb-0 float-left">افزودن اقلام مصرفی</h3>
+		</div>
+		<div class="card-body container">
+			<form method="post" enctype="multipart/form-data">{% csrf_token %}
+				<div class="row">
+					<div class="col-sm-4 col-md-4 col-lg-4">
+						{{ form.IdConsumerItems|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-4">
+						{{ form.IdUser|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-4">
+						{{ form.IsReceived|as_crispy_field }}
+					</div>
+				</div>
+				<button id="BtnSubmit" class="btn btn-success">ثبت</button>
+				{% if user.is_superuser and item.pk %}
+				<a class="badge text-danger" href="{% url 'FacilitiesWelfare:ConsumerItemsRegister-Delete' item.pk %}">حذف</a>
+				{% endif %}
+			</form>
+		</div>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'Template/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% block title-meta %}
+	تعریف پاداش
+{% endblock %}{% endblock %}
+
+{% block main %}
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title mb-0 float-left">افزودن پاداش</h3>
+		</div>
+		<div class="card-body">
+			<form method="post" enctype="multipart/form-data">{% csrf_token %}
+				<div class="row">
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.Title|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						<label for="Id_AssignmentDate" class=" requiredField">
+							تاریخ واگذاری<span class="asteriskField">*</span>
+						</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text cursor-pointer" id="date2">
+									<i class="fa fa-calendar"></i>
+								</span>
+							</div>
+							<input type="text" disabled id="inputDate2-text" class="form-control" placeholder="فارسی">
+							<input type="text" id="Id_AssignmentDate" name="AssignmentDate" class="form-control" placeholder="انگلیسی">
+						</div>
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.Price|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.IdUser|as_crispy_field }}
+					</div>
+					<div class="col-12">
+						{{ form.Description|as_crispy_field }}
+					</div>
+				</div>
+				<button id="BtnSubmit" class="btn btn-success">ثبت</button>
+				{% if user.is_superuser and item.pk %}
+				<a class="badge text-danger" href="{% url 'FacilitiesWelfare:Reward-Delete' item.pk %}">حذف</a>
+				{% endif %}
+			</form>
+		</div>
+</div>
+<script type="text/javascript">
+	$('#date2').MdPersianDateTimePicker({
+		targetTextSelector: '#inputDate2-text',
+		targetDateSelector: '#Id_AssignmentDate',
+		enableTimePicker: false
+	});
+	$('#BtnSubmit').click(function(){
+		document.getElementById("Id_AssignmentDate").value = document.getElementById("Id_AssignmentDate").value.replace("/","-").replace("/","-")
+	});
+</script>
+{% endblock %}

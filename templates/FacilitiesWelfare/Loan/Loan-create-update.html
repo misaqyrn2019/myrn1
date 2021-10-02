@@ -1,0 +1,86 @@
+{% extends 'Template/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% block title-meta %}
+	تعریف وام جدید
+{% endblock %}{% endblock %}
+
+{% block main %}
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title mb-0 float-left">افزودن وام</h3>
+		</div>
+		<div class="card-body container">
+			<form method="post" enctype="multipart/form-data">{% csrf_token %}
+				<div class="row">
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.Title|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.TotalAmount|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.NumberInstallment|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.InstallmentAmount|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.LoanInterest|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.status|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						<label for="Id_StartDateTime" class=" requiredField">
+							تاریخ شروع<span class="asteriskField">*</span>
+						</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text cursor-pointer" id="date1"><i class="fa fa-calendar"></i></span>
+							</div>
+							<input type="text" disabled id="inputDate1-text" class="form-control" placeholder="شمسی">
+							<input type="text" id="Id_StartDateTime" name="StartDateTime" class="form-control" placeholder="میلادی">
+						</div>
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						<label for="Id_EndDateTime" class=" requiredField">
+							تاریخ پایان<span class="asteriskField">*</span>
+						</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text cursor-pointer" id="date2"><i class="fa fa-calendar"></i></span>
+							</div>
+							<input type="text" disabled id="inputDate2-text" class="form-control" placeholder="شمسی">
+							<input type="text" id="Id_EndDateTime" name="EndDateTime" class="form-control" placeholder="میلادی">
+						</div>
+					</div>
+					<div class="col-12">
+						{{ form.Description|as_crispy_field }}
+					</div>
+				</div>
+				<button id="BtnSubmit" class="btn btn-success">ثبت</button>
+				{% if user.is_superuser and item.pk %}
+				<a class="badge text-danger" href="{% url 'FacilitiesWelfare:Loan-Delete' item.pk %}">حذف</a>
+				{% endif %}
+			</form>
+		</div>
+</div>
+<script type="text/javascript">
+	$('#date1').MdPersianDateTimePicker({
+		targetTextSelector: '#inputDate1-text',
+		targetDateSelector: '#Id_StartDateTime',
+		enableTimePicker: false
+	});
+	$('#date2').MdPersianDateTimePicker({
+		targetTextSelector: '#inputDate2-text',
+		targetDateSelector: '#Id_EndDateTime',
+		enableTimePicker: false
+	});
+	$('#BtnSubmit').click(function(){
+		document.getElementById("Id_StartDateTime").value = document.getElementById("Id_StartDateTime").value.replace("/","-").replace("/","-")
+		document.getElementById("Id_EndDateTime").value = document.getElementById("Id_EndDateTime").value.replace("/","-").replace("/","-")
+	});
+</script>
+{% endblock %}

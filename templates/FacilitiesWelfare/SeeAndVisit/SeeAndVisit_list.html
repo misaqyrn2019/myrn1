@@ -1,0 +1,74 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+	دید و بازدید ها
+{% endblock %}{% endblock %}
+
+
+{% block Create %}
+    <a class="badge text-primary" href="{% url 'FacilitiesWelfare:CreateSAV' %}">تعریف دید و بازدید</a>
+{% endblock %}
+
+{% block main %}
+    {% if object_list %}
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>کاربر</th>
+                <th>نسبت</th>
+                <th>نام</th>
+                <th>نام خانوادگی</th>
+                <th>تاریخ ثبت</th>
+                <th>زمان عیادت</th>
+                <th>توضیحات</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in object_list %}
+            <tr>
+                <td data-label="کاربر">{{item.IdUser}}</td>
+                <td data-label="نسبت">{{item.ConsumerItems}}</td>
+                <td data-label="نام">{{item.Name}}</td>
+                <td data-label="نام خانوادگی">{{item.Family}}</td>
+                <td data-label="تاریخ ثبت">{{item.jDateTimeRegister}}</td>
+                <td data-label="زمان عیادت">{{item.jDateTimeVisit}}</td>
+                <td data-label="توضیحات">{{item.Description|safe}}</td>
+                <td data-label="عملیات">
+                    {% if user.is_superuser or user.is_FacilitiesWelfare %}
+                    <a class="badge text-danger" href="{% url 'FacilitiesWelfare:SeeAndVisit-Delete' item.pk %}">حذف</a>
+                    <a class="badge text-succsess" href="{% url 'FacilitiesWelfare:SeeAndVisit-update' item.pk %}">ویرایش</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeSAV' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeSAV' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            دید و بازدید ها خالی است
+            <br>
+            <a href="{% url 'FacilitiesWelfare:CreateSAV' %}">
+                تعریف دید و بازدید
+            </a>
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

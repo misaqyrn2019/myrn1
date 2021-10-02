@@ -1,0 +1,72 @@
+{% extends 'Template/base.html' %}
+{% load humanize %}
+
+{% block Css %}
+    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+    <style type="text/css">
+    *{
+        direction:rtl;
+    }
+    .SPNName{
+        color:rgb(71, 67, 67);
+        text-decoration: underline;
+    }
+    @media print{
+        button,h2,.main-footer{
+            display: none !important;
+        }
+    }
+    </style>
+{% endblock %}
+{% block JS %}
+    <!-- <script type="text/javascript">
+        window.onload = print();
+    </script> -->
+{% endblock %}
+{% block main %}
+{% if ListCommodity %}
+    <table class="table table-report">
+        <thead>
+            <th colspan="11">خرید نیاز برای کالای <span class="SPNName">{{ StoreroomName.IdCommodity.Name }}</span></th>
+        </thead>
+        <tr>
+            <th>شناسه کالا</th>
+            <th>نام کالا</th>
+            <th>تاریخ نیاز</th>
+            <th>انبار</th>
+            <th>واحد سنجش</th>
+            <th>مقدار</th>
+            <th>مبلغ واحد</th>
+            <th>مبلغ کل (ریال)</th>
+            <th>مامور خرید</th>
+            <th>منبع خرید</th>
+            <th>توضیحات</th>
+        </tr>
+    {% for item in ListCommodity %}
+        <tr>
+            <td>{{item.Id}}</td>
+            <td>{{item.IdCommodity.Name}}</td>
+            <td>{{item.jDateRequired}}</td>
+            <td>{{item.IdStoreroom.Name}}</td>
+            <td>{{item.IdUnitofMeasurement}}</td>
+            <td>{{item.Count|apnumber}}</td>
+            <td>{{item.IdCommodity.UnitPrice|apnumber|intcomma}}</td>
+            <td>{{item.amount}}</td>
+            <td>{{item.PurchasingOfficer}}</td>
+            <td>{{item.PurchaseSource}}</td>
+            <td>{{item.Description|safe}}</td>
+        </tr>
+    {% empty %}
+        <h2 style="text-align: center;">در این انبار کالایی وارد نشده است</h2>
+    {% endfor %}
+    <tr>
+        <td colspan="7">جمع</td>
+        <td>{{SumPrice|intcomma}} ريال</td>
+        <td colspan="3"></td>
+    </tr>
+</table>
+{% else %}
+    <h2 style="text-align: center;">در این انبار کالایی وارد نشده است</h2s>
+{% endif %}
+<button onclick="print()" class="btn btn-info">پرینت گزارش</button>
+{% endblock %}

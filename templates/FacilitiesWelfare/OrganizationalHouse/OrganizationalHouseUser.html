@@ -1,0 +1,74 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+	درخواست های خانه سازمانی
+{% endblock %}{% endblock %}
+
+{% block Create %}
+    <span class="badge text-primary">درخواست های خانه سازمانی</a>
+{% endblock %}
+
+{% block main %}
+    {% if object_list %}
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>عنوان</th>
+                <th>شهر</th>
+                <th>آدرس</th>
+                <th>پلاک</th>
+                <th>واحد</th>
+                <th>طبقه</th>
+                <th>کدپستی</th>
+                <th>تمدید تاریخ</th>
+                <th>تاییدیه</th>
+                <th>توضیحات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="عنوان">{{item.IdOrganizationHouse.Title}}</td>
+                    <td data-label="شهر">{{item.IdOrganizationHouse.IdCity}}</td>
+                    <td data-label="آدرس">{{item.IdOrganizationHouse.Address}}</td>
+                    <td data-label="پلاک">{{item.IdOrganizationHouse.Pelaque}}</td>
+                    <td data-label="واحد">{{item.IdOrganizationHouse.Unit}}</td>
+                    <td data-label="طبقه">{{item.IdOrganizationHouse.Floor}}</td>
+                    <td data-label="کدپستی">{{item.IdOrganizationHouse.PostalCode}}</td>
+                    <td data-label="تمدید تاریخ">{{item.jDateExpire}}</td>
+                    <td data-label="تاییدیه">
+                        {% if item.IsVerify == 'Y' %}
+                            <span>تایید شده</span>
+                        {% elif item.IsVerify == 'N' %}
+                            <span>تایید نشده</span>
+                        {% endif %}
+                    </td>
+                    <td data-label="توضیحات">{{item.IdOrganizationHouse.Description|safe}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:OrganizationalHouse-List-All' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:OrganizationalHouse-List-All' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            لیست خانه سازمانی خالی است
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

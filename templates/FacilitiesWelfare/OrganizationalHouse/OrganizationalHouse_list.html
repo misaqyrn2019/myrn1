@@ -1,0 +1,77 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+	لیست خانه سازمانی
+{% endblock %}{% endblock %}
+
+{% block Create %}
+    <a class="badge text-primary" href="{% url 'FacilitiesWelfare:CreateOH' %}">تعریف خانه سازمانی</a>
+{% endblock %}
+
+{% block main %}
+    {% if object_list %}
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>عنوان</th>
+                <th>شهر</th>
+                <th>آدرس</th>
+                <th>پلاک</th>
+                <th>واحد</th>
+                <th>طبقه</th>
+                <th>کدپستی</th>
+                <th>تاریخ ثبت</th>
+                <th>توضیحات</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="عنوان">{{item.Title}}</td>
+                    <td data-label="شهر">{{item.IdCity}}</td>
+                    <td data-label="آدرس">{{item.Address}}</td>
+                    <td data-label="پلاک">{{item.Pelaque}}</td>
+                    <td data-label="واحد">{{item.Unit}}</td>
+                    <td data-label="طبقه">{{item.Floor}}</td>
+                    <td data-label="کدپستی">{{item.PostalCode}}</td>
+                    <td data-label="تاریخ ثبت">{{item.jDateRegister}}</td>
+                    <td data-label="توضیحات">{{item.Description|safe}}</td>
+                    <td data-label="عملیات">
+                        {% if user.is_superuser or user.is_FacilitiesWelfare %}
+                        <a class="badge text-danger" href="{% url 'FacilitiesWelfare:OrganizationalHouse-Delete' item.pk %}">حذف</a>
+                        <a class="badge text-succsess" href="{% url 'FacilitiesWelfare:OrganizationalHouse-update' item.pk %}">ویرایش</a>
+                        {% endif %}
+                    </div>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeOH' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeOH' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            لیست خانه سازمانی خالی است
+            <br>
+            <a href="{% url 'FacilitiesWelfare:CreateOH' %}">
+                تعریف خانه سازمانی
+            </a>
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

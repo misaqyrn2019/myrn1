@@ -1,0 +1,67 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+اقلام مصرفی
+{% endblock %}{% endblock %}
+
+
+{% block Create %}
+    <span class="badge text-primary">اقلام مصرفی</span>
+{% endblock %}
+
+{% block main %}
+    {% if object_list %}
+    <table class="tableResponse">
+        <thead>
+            <th>قلم مصرفی</th>
+            <th>تاریخ ثبت</th>
+            <th>تحویل شده/نشده</th>
+            <th>لغو درخواست</th>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="قلم مصرفی">{{item.IdConsumerItems.Items}}</td>
+                    <td data-label="تاریخ ثبت">{{item.jDateRegister}}</td>
+                    <td data-label="تحویل شده/نشده">
+                        {% if item.IsReceived == 'Y' %}
+                            <span>تحویل شده</span>
+                        {% elif item.IsReceived == 'N' %}
+                            <span>تحویل نشده</span>
+                        {% endif %}
+                    </td>
+                    <td data-label="لغو درخواست">
+                        {% if item.IsReceived == 'Y' %}
+                            <span>غیر قابل لغو</span>
+                        {% elif item.IsReceived == 'N' %}
+                        <a class="badge text-danger" href="{% url 'FacilitiesWelfare:ConsumerItemsRegister-User-Delete' item.pk %}">لغو درخواست</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:ConsumerItemsRegister-List-User' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:ConsumerItemsRegister-List-User' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            اقلام مصرفی برای شما موجود نیست
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

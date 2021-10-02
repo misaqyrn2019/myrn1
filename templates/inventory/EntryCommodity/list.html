@@ -1,0 +1,83 @@
+{% extends 'Template/base.html' %}
+
+
+{% block title %}{% block title-meta %}
+	لیست کالا
+{% endblock %}{% endblock %}
+
+{% block Create %}
+    <a class="badge text-primary" href="{% url 'inventory:EntryCommodity-Create' %}">تعریف کالا</a>
+{% endblock %}
+
+
+{% block main %}
+    {% if object_list %}
+    <div style="min-height:200px;">
+        <div class="row text-center">
+            <div class="col-sm-1"><b>ردیف</b></div>
+            <div class="col-sm-1"><b>نام کالا</b></div>
+            <div class="col-sm-1"><b>نام انبار</b></div>
+            <div class="col-sm-1"><b>نام مشتری</b></div>
+            <div class="col-sm-1"><b>تاریخ ورود</b></div>
+            <div class="col-sm-1"><b>تاریخ انقضا</b></div>
+            <div class="col-sm-1"><b>سریال</b></div>
+            <div class="col-sm-1"><b>وضعیت</b></div>
+            <div class="col-sm-2"><b>توضیحات</b></div>
+            <div class="col-sm-2"><b>عملیات</b></div>
+        </div>
+        {% for item in object_list %}
+            <div class="row text-center">
+                <div class="col-sm-1">{{item.Id}}</div>
+                <div class="col-sm-1">{{item.IdCommodity}}</div>
+                <div class="col-sm-1">{{item.IdStoreroom}}</div>
+                <div class="col-sm-1">{{item.IdCustomer}}</div>
+                <div class="col-sm-1">{{item.jDateEntry}}</div>
+                <div class="col-sm-1">{{item.jDateExpired}}</div>
+                <div class="col-sm-1">{{item.Serial}}</div>
+                <div class="col-sm-1">
+                    {% if item.Status == 'i' %}
+                        ورود کالا
+                    {% elif  item.Status == 'o' %}
+                        خروج کالا
+                    {% elif  item.Status == 'r' %}
+                        مرجوعی کالا
+                    {% endif %}
+                </div>
+                <div class="col-sm-2">{{item.Description|safe}}</div>
+                <div class="col-sm-2">
+                    {% if user.is_superuser or user.is_storekeeper %}
+                    <a class="badge text-danger" href="{% url 'inventory:EntryCommodity-Delete' item.pk %}">حذف</a>
+                    <a class="badge text-succsess" href="{% url 'inventory:EntryCommodity-update' item.pk %}">ویرایش</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'inventory:homeEC' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'inventory:homeEC' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            لیست ورود کالا خالی است
+            <br>
+            <a href="{% url 'inventory:EntryCommodity-Create' %}">
+                تعریف ورود کالا
+            </a>
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

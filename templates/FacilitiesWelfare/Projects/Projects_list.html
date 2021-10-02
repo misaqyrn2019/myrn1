@@ -1,0 +1,68 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+	لیست پروژه ها
+{% endblock %}{% endblock %}
+
+
+{% block Create %}
+    <a class="badge text-primary" href="{% url 'FacilitiesWelfare:CreateFPR' %}">تعریف پروژه</a>
+{% endblock %}
+
+{% block main %}
+    {% if object_list %}
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>نام پروژه</th>
+                <th>شهر</div>
+                <th>نوع پروژه</th>
+                <th>توضیحات</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        {% for item in object_list %}
+        <tbody>
+            <tr>
+                <td data-label="نام پروژه">{{item.Name}}</td>
+                <td data-label="شهر">{{item.IdCity}}</td>
+                <td data-label="نوع پروژه">{{item.IdTypeProject}}</td>
+                <td data-label="توضیحات">{{item.Description|safe}}</td>
+                <td data-label="عملیات">
+                    {% if user.is_superuser or user.is_FacilitiesWelfare %}
+                    <a class="badge text-danger" href="{% url 'FacilitiesWelfare:Projects-Delete' item.pk %}">حذف</a>
+                    <a class="badge text-succsess" href="{% url 'FacilitiesWelfare:Projects-update' item.pk %}">ویرایش</a>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeFPR' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeFPR' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            لیست پروژه ها خالی است
+            <br>
+            <a href="{% url 'FacilitiesWelfare:CreateFPR' %}">
+                تعریف پروژه
+            </a>
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

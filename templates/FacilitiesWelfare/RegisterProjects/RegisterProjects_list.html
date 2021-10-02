@@ -1,0 +1,66 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+	ثبت نام های پروژه
+{% endblock %}{% endblock %}
+
+
+{% block Create %}
+    <a class="badge text-primary" href="{% url 'FacilitiesWelfare:CreateRPR' %}">تعریف پروژه جدید</a>
+{% endblock %}
+
+{% block main %}
+    {% if object_list %}
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>تاریخ ثبت</th>
+                <th>کاربر</div>
+                <th>نام پروژه</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        {% for item in object_list %}
+        <tbody>
+            <tr>
+                <td data-label="تاریخ ثبت">{{item.jRegisterDateTime}}</td>
+                <td data-label="کاربر">{{item.IdUser}}</td>
+                <td data-label="نام پروژه">{{item.IdProject}}</td>
+                <td data-label="عملیات">
+                    {% if user.is_superuser or user.is_FacilitiesWelfare %}
+                    <a class="badge text-danger" href="{% url 'FacilitiesWelfare:RegisterProjects-Delete' item.pk %}">حذف</a>
+                    <a class="badge text-succsess" href="{% url 'FacilitiesWelfare:RegisterProjects-update' item.pk %}">ویرایش</a>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeRPR' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:homeRPR' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            لیست پروژه های درخواستی خالی است
+            <br>
+            <a href="{% url 'FacilitiesWelfare:CreateRPR' %}">
+                تعریف پروژه درخواستی
+            </a>
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

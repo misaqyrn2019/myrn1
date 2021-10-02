@@ -1,0 +1,35 @@
+{% extends 'Template/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title mb-0 float-left">افزودن مشتری</h3>
+		</div>
+		<div class="card-body">
+			<form method="post" enctype="multipart/form-data">{% csrf_token %}
+				<div class="row">
+					
+					<div class="col-sm-3"><b>{{form.Name|as_crispy_field}}</b></div>
+					<div class="col-sm-3"><b>{{form.Family|as_crispy_field}}</b></div>
+					<div class="col-sm-3"><b>{{form.EconomicNumber|as_crispy_field}}</b></div>
+					<div class="col-sm-3"><b>{{form.Mobile|as_crispy_field}}</b></div>
+					<div class="col-sm-3"><b>{{form.RegistrationNumber|as_crispy_field}}</b></div>
+					<div class="col-sm-3"><b>{{form.NationalID|as_crispy_field}}</b></div>
+					<div class="col-sm-3"><b>{{form.PostalCode|as_crispy_field}}</b></div>
+					<div class="col-sm-3"><b>{{form.TelephoneCustomer|as_crispy_field}}</b></div>
+					<div class="col-sm-3"><b>{{form.FirstBalanceCourse|as_crispy_field}}</b></div>
+					<div class="col-sm-3"><b>{{form.Status|as_crispy_field}}</b></div>
+					<div class="col-sm-9"><b>{{form.Address|as_crispy_field}}</b></div>
+					<!-- AccountSideCode
+					TelephoneCustomer -->
+				</div>
+				<button class="btn btn-success">ثبت مشتری</button>
+				{% if user.is_superuser and item.pk %}
+				<a class="badge text-danger" href="{% url 'inventory:Customer-Delete' item.pk %}">حذف</a>
+				{% endif %}
+			</form>
+		</div>
+</div>
+{% endblock %}

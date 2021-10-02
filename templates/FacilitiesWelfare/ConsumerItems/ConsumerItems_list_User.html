@@ -1,0 +1,56 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+اقلام مصرفی
+{% endblock %}{% endblock %}
+
+{% block Create %}
+    <span class="badge text-primary">اقلام مصرفی</span>
+{% endblock %}
+
+{% block main %}
+    {% if object_list %}
+    <table class="tableResponse">
+        <thead>
+            <th>عنوان</th>
+            <th>قلم مصرفی</th>
+            <th>تاریخ شروع درخواست</th>
+            <th>مهلت ثبت درخواست</th>
+            <th>درخواست</th>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td>{{item.Title}}</td>
+                    <td data-label="قلم مصرفی">{{item.Items}}</td>
+                    <td data-label="تاریخ شروع درخواست">{{item.jDateRegister}}</td>
+                    <td data-label="مهلت ثبت درخواست">{{item.jDateExpire}}</td>
+                    <td><a href="{% url 'FacilitiesWelfare:ConsumerItemsRegister-Reg-User' item.pk %}" class="badge text-succsess">ثبت درخواست</span></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:ConsumerItems-List-User' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'FacilitiesWelfare:ConsumerItems-List-User' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            اقلام مصرفی جهت درخواست فعلا موجود نیست
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

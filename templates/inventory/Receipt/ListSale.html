@@ -1,0 +1,64 @@
+{% extends 'Template/base.html' %}
+{% load humanize %}
+
+{% block title %}{% block title-meta %}
+	لیست فاکتور فروش
+{% endblock %}{% endblock %}
+
+{% block Css %}
+    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+    <style type="text/css">
+    *{
+        direction:rtl;
+    }
+    .SPNName{
+        color:rgb(71, 67, 67);
+        text-decoration: underline;
+    }
+    @media print{
+        button,h2,.main-footer{
+            display: none !important;
+        }
+    }
+    </style>
+{% endblock %}
+{% block JS %}
+    <!-- <script type="text/javascript">
+        window.onload = print();
+    </script> -->
+{% endblock %}
+{% block main %}
+{% if ReceiptSale %}
+    <table class="table table-responsive">
+        <tr>
+            <td>ردیف</td>
+            <td>کالا</td>
+            <td>واحد سنجش</td>
+            <td>تعداد</td>
+            <td>مبلغ</td>
+            <td>تخفیف</td>
+            <td>مالیات</td>
+            <td>تاریخ فاکتور</td>
+            <td>مشتری</td>
+            <td>انبار</td>
+        </tr>
+        {% for item in ReceiptSale %}
+            <tr>
+                <td>{{item.Id}}</td>
+                <td>{{item.IdCommodity}}</td>
+                <td>{{item.IdUnitofMeasurement}}</td>
+                <td>{{item.Count}}</td>
+                <td>{{item.Amount}}</td>
+                <td>{{item.Discount}}</td>
+                <td>{{item.Taxation}}</td>
+                <td>{{item.jDate}}</td>
+                <td>{{item.IdCustomer}}</td>
+                <td>{{item.IdStoreroom}}</td>
+            </tr>
+        {% endfor %}
+</table>
+{% else %}
+    <h2 style="text-align: center;">فاکتور فروش خالی است</h2s>
+{% endif %}
+<button onclick="print()" class="btn btn-info">پرینت گزارش</button>
+{% endblock %}

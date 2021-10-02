@@ -1,0 +1,69 @@
+{% extends 'Template/base.html' %}
+
+
+{% block title %}{% block title-meta %}
+	لیست راننده
+{% endblock %}{% endblock %}
+
+{% block Create %}
+    <a class="badge text-primary" href="{% url 'inventory:drivers-Create' %}">تعریف راننده</a>
+{% endblock %}
+
+
+{% block main %}
+    {% if object_list %}
+    <div style="min-height:200px;">
+        <div class="row text-center">
+            <div class="col-sm-1"><b>ردیف</b></div>
+            <div class="col-sm-1"><b>نام</b></div>
+            <div class="col-sm-2"><b>نام خانوادگی</b></div>
+            <div class="col-sm-2"><b>نام باربری</b></div>
+            <div class="col-sm-2"><b>شماره همراه</b></div>
+            <div class="col-sm-2"><b>کد ملی</b></div>
+            <div class="col-sm-2"><b>عملیات</b></div>
+        </div>
+        {% for item in object_list %}
+            <div class="row text-center">
+                <div class="col-sm-1">{{item.DriverCode}}</div>
+                <div class="col-sm-1">{{item.Name}}</div>
+                <div class="col-sm-2">{{item.Family}}</div>
+                <div class="col-sm-2">{{item.FreightName}}</div>
+                <div class="col-sm-2">{{item.Telephone}}</div>
+                <div class="col-sm-2">{{item.NationalCode}}</div>
+                <div class="col-sm-2">
+                    {% if user.is_superuser or user.is_storekeeper %}
+                    <a class="badge text-danger" href="{% url 'inventory:drivers-Delete' item.pk %}">حذف</a>
+                    <a class="badge text-succsess" href="{% url 'inventory:drivers-update' item.pk %}">ویرایش</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'inventory:homeDL' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'inventory:homeDL' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            لیست راننده ها خالی است
+            <br>
+            <a href="{% url 'inventory:drivers-Create' %}">
+                تعریف راننده
+            </a>
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

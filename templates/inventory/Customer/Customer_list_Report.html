@@ -1,0 +1,84 @@
+{% extends 'Template/base.html' %}
+{% load humanize %}
+
+{% block title %}{% block title-meta %}
+	مشتریان
+{% endblock %}{% endblock %}
+
+{% block Css %}
+    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+    <style type="text/css">
+    *{
+        direction:rtl;
+    }
+    .SPNName{
+        color:rgb(71, 67, 67);
+        text-decoration: underline;
+    }
+    @media print{
+        button,h2,.main-footer,.main-sidebar{
+            display: none !important;
+        }
+        table{
+            width:100% !important;
+        }
+    }
+    </style>
+{% endblock %}
+{% block JS %}
+    <!-- <script type="text/javascript">
+        window.onload = print();
+    </script> -->
+{% endblock %}
+{% block main %}
+{% if object_list %}
+    <table class="table table-report">
+        <thead>
+            <th colspan="8">لیست مشتری ها</th>
+        </thead>
+        <tr>
+            <th>شماره مشتری</th>
+            <th>نام</th>
+            <th>فامیل</th>
+            <th>شماره همراه</th>
+            <th>شماره تماس</th>
+            <th>شماره ثبت</th>
+            <th>شماره اقتصادی</th>
+            <th>کد ملی</th>
+            <th>کد پستی</th>
+            <th>آدرس</th>
+            <th>مانده اول دوره</th>
+            <th>وضعیت</th>
+        </tr>
+    {% for item in object_list %}
+        <tr>
+            <td>{{item.AccountSideCode}}</td>
+            <td>{{item.Name}}</td>
+            <td>{{item.Family}}</td>
+            <td>{{item.Mobile}}</td>
+            <td>{{item.TelephoneCustomer}}</td>
+            <td>{{item.RegistrationNumber}}</td>
+            <td>{{item.EconomicNumber}}</td>
+            <td>{{item.NationalID}}</td>
+            <td>{{item.PostalCode}}</td>
+            <td>{{item.Address|safe}}</td>
+            <td>{{item.FirstBalanceCourse}}</td>
+            <td>
+                {% if item.Status == 'A' %}
+                    <p>بی حساب</p>
+                {% elif item.Status == 'B' %}
+                    <p>بدهکار</p>
+                {% elif item.Status == 'C' %}
+                    <p>بستانکار</p>
+                {% endif %}
+            </td>
+        </tr>
+    {% empty %}
+        <h2 style="text-align: center;">هنوز مشتری ثبت نشده است</h2>
+    {% endfor %}
+</table>
+{% else %}
+    <h2 style="text-align: center;">هنوز مشتری ثبت نشده است</h2>
+{% endif %}
+<button onclick="print()" class="btn btn-info">پرینت گزارش</button>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'Template/base.html' %}
+{% load humanize %}
+
+{% block Css %}
+    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+    <style type="text/css">
+    *{
+        direction:rtl;
+    }
+    .SPNName{
+        color:rgb(71, 67, 67);
+        text-decoration: underline;
+    }
+    @media print{
+        button,h2,.main-footer{
+            display: none !important;
+        }
+    }
+    </style>
+{% endblock %}
+{% block JS %}
+    <!-- <script type="text/javascript">
+        window.onload = print();
+    </script> -->
+{% endblock %}
+{% block main %}
+{% if ListCommodity %}
+    <table class="table table-report">
+        <thead>
+            <th colspan="8">اقلام <span class="SPNName">{{ StoreroomName }}</span></th>
+        </thead>
+        <tr>
+            <th>شناسه کالا</th>
+            <th>نام کالا</th>
+            <th>تاریخ ورود</th>
+            <th>واحد سنجش</th>
+            <th>مقدار</th>
+            <th>مبلغ واحد</th>
+            <th>مبلغ کل (ریال)</th>
+            <th>توضیحات</th>
+        </tr>
+    {% for item in ListCommodity %}
+        <tr>
+            <td>{{item.Id}}</td>
+            <td>{{item.Name}}</td>
+            <td>{{item.jEntryDateTime}}</td>
+            <td>{{item.IdUnitofMeasurement}}</td>
+            <td>{{item.UnitPackCount|apnumber}}</td>
+            <td>{{item.UnitPrice|apnumber|intcomma}}</td>
+            <td>{{item.amount}}</td>
+            <td>{{item.Description|safe}}</td>
+        </tr>
+    {% empty %}
+        <h2 style="text-align: center;">در این انبار کالایی وارد نشده است</h2>
+    {% endfor %}
+    <tr>
+        <td colspan="6">جمع</td>
+        <td>{{SumPrice|intcomma}} ريال</td>
+        <td></td>
+    </tr>
+</table>
+{% else %}
+    <h2 style="text-align: center;">در این انبار کالایی وارد نشده است</h2s>
+{% endif %}
+<button onclick="print()" class="btn btn-info">پرینت گزارش</button>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'Template/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% block title-meta %}
+	خانه سازمانی جدید
+{% endblock %}{% endblock %}
+
+{% block main %}
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title mb-0 float-left">افزودن خانه سازمانی</h3>
+		</div>
+		<div class="card-body container">
+			<form method="post" enctype="multipart/form-data">{% csrf_token %}
+				<div class="row">
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.Title|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.IdCity|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.Address|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.PostalCode|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.Pelaque|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.Unit|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.Floor|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						<label for="Id_DateRegister" class=" requiredField">
+							تاریخ ثبت<span class="asteriskField">*</span>
+						</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text cursor-pointer" id="date1"><i class="fa fa-calendar"></i></span>
+							</div>
+							<input type="text" disabled id="inputDate1-text" class="form-control" placeholder="شمسی">
+							<input type="text" id="Id_DateRegister" name="DateRegister" class="form-control" placeholder="میلادی">
+						</div>
+					</div>
+					<div class="col-12">
+						{{ form.Description|as_crispy_field }}
+					</div>	
+				</div>
+				<button id="BtnSubmit" class="btn btn-success">ثبت</button>
+				{% if user.is_superuser and item.pk %}
+				<a class="badge text-danger" href="{% url 'FacilitiesWelfare:OrganizationalHouse-Delete' item.pk %}">حذف</a>
+				{% endif %}
+			</form>
+		</div>
+</div>
+<script type="text/javascript">
+	$('#date1').MdPersianDateTimePicker({
+		targetTextSelector: '#inputDate1-text',
+		targetDateSelector: '#Id_DateRegister',
+		enableTimePicker: false
+	});
+	$('#BtnSubmit').click(function(){
+		document.getElementById("Id_DateRegister").value = document.getElementById("Id_DateRegister").value.replace("/","-").replace("/","-")
+	});
+</script>
+{% endblock %}

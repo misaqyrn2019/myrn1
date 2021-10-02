@@ -1,0 +1,361 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+	داشبورد ماژول انبارداری
+{% endblock %}{% endblock %}
+
+{% block JS %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:8001/inventory/d?format=json",
+                dataType: "json",
+                success: function (result, status, xhr) {
+                    Highcharts.chart('PricePerStoreroom', {
+                    title: {
+                        text: 'مجموع مبلغ اقلام  به تفکیک انبار'
+                    },
+                    chart: {
+                        type: 'column'
+                    },
+                    yAxis:{
+                        title: {
+                            text: ''
+                        }
+                    },
+                    xAxis: {
+                        categories: result.Name
+                    },
+                    tooltip: {
+                        pointFormat: "<span style='direction:ltr;text-align:left'><b>{point.y:.f}</b><br></span>"
+                    },
+                    series: [{
+                        type: 'column',
+                        colorByPoint: true,
+                        data: result.Price,
+                        showInLegend: false
+                    }]
+                });
+                },
+                error: function (xhr, status, error) {
+                    alert("ERROR")
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:8001/inventory/d1?format=json",
+                dataType: "json",
+                success: function (result, status, xhr) {
+                    Highcharts.chart('PriceRequestBuyNPerStoreroom', {
+                    title: {
+                        text: 'مجموع مبلغ درخواست خرید به تفکیک انبار'
+                    },
+                    subtitle:{
+                        text:'خریداری نشده'
+                    },
+                    chart: {
+                        type: 'column'
+                    },
+                    yAxis:{
+                        title: {
+                            text: ''
+                        }
+                    },
+                    xAxis: {
+                        categories: result.Name
+                    },
+                    tooltip: {
+                        pointFormat: "<span style='direction:ltr;text-align:left'><b>{point.y:.f}</b><br></span>"
+                    },
+                    series: [{
+                        type: 'column',
+                        colorByPoint: true,
+                        data: result.Price,
+                        showInLegend: false
+                    }]
+                });
+                },
+                error: function (xhr, status, error) {
+                    alert("ERROR")
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:8001/inventory/d2?format=json",
+                dataType: "json",
+                success: function (result, status, xhr) {
+                    Highcharts.chart('PriceRequestBuyYPerStoreroom', {
+                    title: {
+                        text: 'مجموع مبلغ درخواست خرید به تفکیک انبار'
+                    },
+                    subtitle:{
+                        text:'خریداری شده'
+                    },
+                    chart: {
+                        type: 'column'
+                    },
+                    yAxis:{
+                        title: {
+                            text: ''
+                        }
+                    },
+                    xAxis: {
+                        categories: result.Name
+                    },
+                    tooltip: {
+                        pointFormat: "<span style='direction:ltr;text-align:left'><b>{point.y:.f}</b><br></span>"
+                    },
+                    series: [{
+                        type: 'column',
+                        colorByPoint: true,
+                        data: result.Price,
+                        showInLegend: false
+                    }]
+                });
+                },
+                error: function (xhr, status, error) {
+                    alert("ERROR")
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block Css %}
+<style type="text/css">
+.card-header{
+    max-height: 300px !important;
+    height: 300px !important;
+    overflow-y: scroll !important;
+}
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-4 card mb-4 box-shadow">
+        <div id="PricePerStoreroom"></div>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-4 card mb-4 box-shadow">
+        <div id="PriceRequestBuyNPerStoreroom"></div>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-4 card mb-4 box-shadow">
+        <div id="PriceRequestBuyYPerStoreroom"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-4 card mb-4 box-shadow">
+        <div class="card-header">
+            <div class="my-0 font-weight-normal">
+                گزارشات کلی
+            </div>
+            <hr/>
+            <div class="card-body">
+                <a href="{% url 'inventory:Customer-Report' %}" target="_blank">
+                    لیست مشتریان
+                </a>
+                <br>
+                <a href="{% url 'inventory:Drivers-Report' %}" target="_blank">
+                    لیست راننده ها
+                </a>
+                <br>
+                <a href="{% url 'inventory:CommodityAll-Report' %}" target="_blank">
+                    لیست کلیه ی کالاها
+                </a>
+                <br>
+                <a href="{% url 'inventory:Receipt-ReportBuy' %}" target="_blank">
+                    لیست خرید کالاها
+                </a>
+                <br>
+                <a href="{% url 'inventory:Receipt-ReportSale' %}" target="_blank">
+                    لیست فروش کالاها
+                </a>
+                <br>
+                <a href="{% url 'inventory:Receipt-ReportBuy' %}" target="_blank">
+                    لیست فاکتور خرید
+                </a>
+                <br>
+                <a href="{% url 'inventory:Receipt-ReportSale' %}" target="_blank">
+                    لیست فاکتور فروش
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 card mb-4 box-shadow">
+        <div class="card-header">
+            <div class="my-0 font-weight-normal">
+                اقلام انبار
+            </div>
+            <hr/>
+            <div class="card-body">
+                {% for item in Storeroom %}
+                    <a href="{% url 'inventory:StoreroomListReport' IdStoreroom=item.Id %}" target="_blank">
+                        {{item.Name}}
+                    </a>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 card mb-4 box-shadow">
+        <div class="card-header">
+            <div class="my-0 font-weight-normal">
+                تامین کننده ها
+            </div>
+            <hr/>
+            <div class="card-body">
+                {% for item in Supplier %}
+                    <a href="{% url 'inventory:SupplierListReport' IdSupplier=item.Id %}" target="_blank">
+                        {{item.Name}}
+                    </a>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 card mb-4 box-shadow">
+        <div class="card-header">
+            <div class="my-0 font-weight-normal">
+                درخواست خرید - تفکیک کالا
+            </div>
+            <hr/>
+            <div class="card-body">
+                {% for item in PurchaseRequestCommodity %}
+                    <a href="{% url 'inventory:PurchaseRequest-Report' item.IdCommodity.Id %}">
+                        {{item.IdCommodity}}
+                    </a>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 card mb-4 box-shadow">
+        <div class="card-header">
+            <div class="my-0 font-weight-normal">
+                درخواست خرید - تفکیک انبار
+            </div>
+            <hr/>
+            <div class="card-body">
+                {% for item in PurchaseRequestStoreroom %}
+                    <a href="{% url 'inventory:PurchaseRequestSR-Report' item.IdStoreroom.Id %}">
+                        {{ item.IdStoreroom.Name }}
+                    </a>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 card mb-4 box-shadow">
+        <div class="card-header">
+            <div class="my-0 font-weight-normal">
+                فاکتور خرید - تفکیک انبار
+            </div>
+            <hr/>
+            <div class="card-body">
+                {% for item in ReceiptStoreroomBuy %}
+                    <a href="{% url 'inventory:Receipt-ReportStoreroomBuy' item.IdStoreroom.Id %}">
+                        {{ item.IdStoreroom.Name }}
+                    </a>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 card mb-4 box-shadow">
+        <div class="card-header">
+            <div class="my-0 font-weight-normal">
+                فاکتور فروش - تفکیک انبار
+            </div>
+            <hr/>
+            <div class="card-body">
+                {% for item in ReceiptStoreroomSale %}
+                    <a href="{% url 'inventory:Receipt-ReportStoreroomSale' item.IdStoreroom.Id %}">
+                        {{ item.IdStoreroom.Name }}
+                    </a>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 card mb-4 box-shadow">
+        <div class="card-header">
+            <div class="my-0 font-weight-normal">
+                درخواست تعمیر کالا - تفکیک انبار
+            </div>
+            <hr/>
+            <div class="card-body">
+                {% for item in productRepairedN %}
+                    <a href="{% url 'inventory:ProductPerStoreroom-Report' item.IdStoreroom.Id %}" target="_blank">
+                        {{item.IdStoreroom.Name}}
+                    </a>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 card mb-4 box-shadow">
+        <div class="card-header">
+            <div class="my-0 font-weight-normal">
+                ورود کالا - تفکیک انبار
+            </div>
+            <hr/>
+            <div class="card-body">
+                {% for item in EntryCommodityPerStoreroomInput %}
+                    <a href="{% url 'inventory:EntryCommodity-Report' item.IdStoreroom.Id 1 %}" target="_blank">
+                        {{item.IdStoreroom.Name}}
+                    </a>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4 col-lg-4 card mb-4 box-shadow">
+        <div class="card-header">
+            <div class="my-0 font-weight-normal">
+                خروج کالا - تفکیک انبار
+            </div>
+            <hr/>
+            <div class="card-body">
+                {% for item in EntryCommodityPerStoreroomOutput %}
+                    <a href="{% url 'inventory:EntryCommodity-Report' item.IdStoreroom.Id 2 %}" target="_blank">
+                        {{item.IdStoreroom.Name}}
+                    </a>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>  
+
+    <div class="col-sm-6 col-md-4 col-lg-4 card mb-4 box-shadow">
+        <div class="card-header">
+            <div class="my-0 font-weight-normal">
+                مرجوعی کالا - تفکیک انبار
+            </div>
+            <hr/>
+            <div class="card-body">
+                {% for item in EntryCommodityPerStoreroomReturned %}
+                    <a href="{% url 'inventory:EntryCommodity-Report' item.IdStoreroom.Id 3 %}" target="_blank">
+                        {{item.IdStoreroom.Name}}
+                    </a>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>  
+</div>
+{% endblock %}

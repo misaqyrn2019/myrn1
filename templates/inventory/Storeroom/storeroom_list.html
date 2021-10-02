@@ -1,0 +1,77 @@
+{% extends 'Template/base.html' %}
+
+{% block title %}{% block title-meta %}
+	لیست انبار
+{% endblock %}{% endblock %}
+
+
+{% block Create %}
+    <a class="badge text-primary" href="{% url 'inventory:Create' %}">تعریف انبار</a>
+{% endblock %}
+
+{% block main %}
+    {% if object_list %}
+    <div style="min-height:200px;">
+        <div class="row text-center">
+            <div class="col-sm-2"><b>نام انبار</b></div>
+            <div class="col-sm-2"><b>شهر</b></div>
+            <div class="col-sm-2"><b>آدرس انبار</b></div>
+            <div class="col-sm-2"><b>وضعیت انبار</b></div>
+            <div class="col-sm-4"><b>عملیات</b></div>
+        </div>
+        {% for item in object_list %}
+            <div class="row text-center">
+                <div class="col-sm-2">
+                    <a href="{% url 'inventory:StoreroomListReport' IdStoreroom=item.Id %}" target="_blank">
+                        {{item.Name}}
+                    </a>
+                </div>
+                <div class="col-sm-2">{{item.IdCity}}</div>
+                <div class="col-sm-2">{{item.Address|safe}}</div>
+                <div class="col-sm-2">
+                {% if item.status == "A"%}
+                    فعال
+                {% elif item.status == "N" %}
+                    غیر فعال
+                {% endif %}
+                </div>
+                <div class="col-sm-4">
+                    {% if user.is_superuser or user.is_storekeeper %}
+                    <a class="badge text-danger" href="{% url 'inventory:Storeroom-Delete' item.pk %}">حذف</a>
+                    <a class="badge text-succsess" href="{% url 'inventory:Storeroom-update' item.pk %}">ویرایش</a>
+                    <a href="{% url 'inventory:StoreroomListReport' IdStoreroom=item.Id %}" target="_blank">
+                        گزارش اقلام {{item.Name}}
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row pagination">
+        <span class="step-links">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-primary" href="{% url 'inventory:homeSL' page_obj.previous_page_number %}">
+                        قبلی
+                    </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-primary" href="{% url 'inventory:homeSL' page_obj.next_page_number %}">
+                        بعدی
+                    </a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <div style="min-height:200px;">
+        <P class="text-center">
+            لیست انبار خالی است
+            <br>
+            <a href="{% url 'inventory:Create' %}">
+                تعریف انبار
+            </a>
+        </P>
+    </div>
+    {% endif %}
+{% endblock %}

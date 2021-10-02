@@ -1,0 +1,78 @@
+{% extends 'Template/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% block title-meta %}
+	ایجاد کمک معیشتی نقدی جدید
+{% endblock %}{% endblock %}
+
+{% block main %}
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title mb-0 float-left">افزودن کمک معیشتی جدید</h3>
+		</div>
+		<div class="card-body container">
+			<form method="post" enctype="multipart/form-data">{% csrf_token %}
+				<div class="row">
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.Title|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.Price|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.TypeAssistance|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						{{ form.IdUser|as_crispy_field }}
+					</div>
+					<div class="col-sm-4 col-md-4 col-lg-3">
+						<label for="id_DateTimeVisit" class=" requiredField">
+							تاریخ کمک<span class="asteriskField">*</span>
+						</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text cursor-pointer" id="date2">
+									<i class="fa fa-calendar"></i>
+								</span>
+							</div>
+							<input type="text" disabled id="inputDate2-text" class="form-control" placeholder="فارسی">
+							<input type="text" id="id_DateRegister" name="DateRegister" class="form-control" placeholder="انگلیسی">
+						</div>
+					</div>
+					<div class="col-12">
+						{{ form.Description|as_crispy_field }}
+					</div>
+				</div>
+				<button id="BtnSubmit" class="btn btn-success">ثبت</button>
+				{% if user.is_superuser and item.pk %}
+				<a class="badge text-danger" href="{% url 'FacilitiesWelfare:CashAssistance-Delete' item.pk %}">حذف</a>
+				{% endif %}
+			</form>
+		</div>
+</div>
+<script>
+	$("#div_id_IdUser").hide()
+	$('#id_TypeAssistance').click(function(e){
+		var Select = $("#id_TypeAssistance").val()
+		if (Select == "PU")
+		{
+			document.getElementById("id_IdUser").value = ""
+			$("#div_id_IdUser").hide()
+		}
+		else
+		{
+			$("#div_id_IdUser").show()
+		}
+	});
+	$('#date2').MdPersianDateTimePicker({
+		targetTextSelector: '#inputDate2-text',
+		targetDateSelector: '#id_DateRegister',
+		enableTimePicker: false
+	});
+	$('#BtnSubmit').click(function(){
+		document.getElementById("id_DateRegister").value = document.getElementById("id_DateRegister").value.replace("/","-").replace("/","-")
+	});
+</script>
+{% endblock %}
