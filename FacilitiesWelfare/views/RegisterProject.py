@@ -26,10 +26,7 @@ class RegisterProjectList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/RegisterProjects/RegisterProjects_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return RegisterProject.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return RegisterProject.objects.filter(author=self.request.user)
+        return RegisterProject.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -47,10 +44,7 @@ class RegisterProjectCreate(FacilitiesWelfareAccessMixin,DefineRegisterProjects,
     template_name = "FacilitiesWelfare/RegisterProjects/RegisterProjects-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return RegisterProject.objects.all()
-        else:
-            return RegisterProject.objects.filter(author=self.request.user)
+        return RegisterProject.objects.all()
 
 class RegisterProjectUpdate(FacilitiesWelfareAccessMixin,DefineRegisterProjects,UpdateView):
     model = RegisterProject
@@ -58,10 +52,7 @@ class RegisterProjectUpdate(FacilitiesWelfareAccessMixin,DefineRegisterProjects,
     template_name = "FacilitiesWelfare/RegisterProjects/RegisterProjects-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return RegisterProject.objects.all()
-        else:
-            return RegisterProject.objects.filter(author=self.request.user)
+        return RegisterProject.objects.all()
 
 class RegisterProjectDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = RegisterProject

@@ -27,10 +27,7 @@ class RewardList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/Reward/Reward_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Reward.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return Reward.objects.filter(author=self.request.user)
+        return Reward.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -48,10 +45,7 @@ class RewardCreate(FacilitiesWelfareAccessMixin,DefineReward,CreateView):
     template_name = "FacilitiesWelfare/Reward/Reward-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Reward.objects.all()
-        else:
-            return Reward.objects.filter(author=self.request.user)
+        return Reward.objects.all()
 
 class RewardUpdate(FacilitiesWelfareAccessMixin,DefineReward,UpdateView):
     model = Reward
@@ -59,10 +53,7 @@ class RewardUpdate(FacilitiesWelfareAccessMixin,DefineReward,UpdateView):
     template_name = "FacilitiesWelfare/Reward/Reward-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Reward.objects.all()
-        else:
-            return Reward.objects.filter(author=self.request.user)
+        return Reward.objects.all()
 
 class RewardDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = Reward

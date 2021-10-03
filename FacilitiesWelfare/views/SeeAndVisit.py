@@ -27,10 +27,7 @@ class SeeAndVisitList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/SeeAndVisit/SeeAndVisit_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return SeeAndVisit.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return SeeAndVisit.objects.filter(author=self.request.user)
+        return SeeAndVisit.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -48,10 +45,7 @@ class SeeAndVisitCreate(FacilitiesWelfareAccessMixin,DefineSeeAndVisit,CreateVie
     template_name = "FacilitiesWelfare/SeeAndVisit/SeeAndVisit-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return SeeAndVisit.objects.all()
-        else:
-            return SeeAndVisit.objects.filter(author=self.request.user)
+        return SeeAndVisit.objects.all()
 
 class SeeAndVisitUpdate(FacilitiesWelfareAccessMixin,DefineSeeAndVisit,UpdateView):
     model = SeeAndVisit
@@ -59,10 +53,7 @@ class SeeAndVisitUpdate(FacilitiesWelfareAccessMixin,DefineSeeAndVisit,UpdateVie
     template_name = "FacilitiesWelfare/SeeAndVisit/SeeAndVisit-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return SeeAndVisit.objects.all()
-        else:
-            return SeeAndVisit.objects.filter(author=self.request.user)
+        return SeeAndVisit.objects.all()
 
 class SeeAndVisitDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = SeeAndVisit

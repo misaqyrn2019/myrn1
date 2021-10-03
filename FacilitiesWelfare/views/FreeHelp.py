@@ -28,10 +28,7 @@ class FreeHelpList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/FreeHelp/FreeHelp_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return FreeHelp.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return FreeHelp.objects.filter(author=self.request.user)
+        return FreeHelp.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -49,10 +46,7 @@ class FreeHelpCreate(FacilitiesWelfareAccessMixin,DefineFreeHelp,CreateView):
     template_name = "FacilitiesWelfare/FreeHelp/FreeHelp-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return FreeHelp.objects.all()
-        else:
-            return FreeHelp.objects.filter(author=self.request.user)
+        return FreeHelp.objects.all()
 
 class FreeHelpUpdate(FacilitiesWelfareAccessMixin,DefineFreeHelp,UpdateView):
     model = FreeHelp
@@ -60,10 +54,7 @@ class FreeHelpUpdate(FacilitiesWelfareAccessMixin,DefineFreeHelp,UpdateView):
     template_name = "FacilitiesWelfare/FreeHelp/FreeHelp-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return FreeHelp.objects.all()
-        else:
-            return FreeHelp.objects.filter(author=self.request.user)
+        return FreeHelp.objects.all()
 
 class FreeHelpDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = FreeHelp

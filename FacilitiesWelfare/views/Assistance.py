@@ -27,10 +27,7 @@ class AssistanceList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/Assistance/Assistance_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Assistance.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return Assistance.objects.filter(author=self.request.user)
+        return Assistance.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -48,10 +45,7 @@ class AssistanceCreate(FacilitiesWelfareAccessMixin,DefineAssistance,CreateView)
     template_name = "FacilitiesWelfare/Assistance/Assistance-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Assistance.objects.all()
-        else:
-            return Assistance.objects.filter(author=self.request.user)
+        return Assistance.objects.all()
 
 class AssistanceUpdate(FacilitiesWelfareAccessMixin,DefineAssistance,UpdateView):
     model = Assistance
@@ -59,10 +53,7 @@ class AssistanceUpdate(FacilitiesWelfareAccessMixin,DefineAssistance,UpdateView)
     template_name = "FacilitiesWelfare/Assistance/Assistance-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Assistance.objects.all()
-        else:
-            return Assistance.objects.filter(author=self.request.user)
+        return Assistance.objects.all()
 
 class AssistanceDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = Assistance

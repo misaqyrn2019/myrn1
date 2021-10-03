@@ -29,10 +29,7 @@ class LoanList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/Loan/Loan_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Loan.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return Loan.objects.filter(author=self.request.user)
+        return Loan.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -50,10 +47,7 @@ class LoanCreate(FacilitiesWelfareAccessMixin,DefineLoan,CreateView):
     template_name = "FacilitiesWelfare/Loan/Loan-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Loan.objects.all()
-        else:
-            return Loan.objects.filter(author=self.request.user)
+        return Loan.objects.all()
 
 class LoanUpdate(FacilitiesWelfareAccessMixin,DefineLoan,UpdateView):
     model = Loan
@@ -61,11 +55,7 @@ class LoanUpdate(FacilitiesWelfareAccessMixin,DefineLoan,UpdateView):
     template_name = "FacilitiesWelfare/Loan/Loan-create-update.html"
 
     def get_queryset(self):
-        print('************************************************')
-        if self.request.user.is_FacilitiesWelfare:
-            return Loan.objects.all()
-        else:
-            return Loan.objects.filter(author=self.request.user)
+        return Loan.objects.all()
 
 class LoanDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = Loan
@@ -79,10 +69,7 @@ class RLoanList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/Loan/RegisterLoan_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return RegisterLoan.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return RegisterLoan.objects.filter(author=self.request.user)
+        return RegisterLoan.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -101,10 +88,7 @@ class LoanListForReg(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/Loan/LoanForRegsiter.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Loan.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return Loan.objects.filter(author=self.request.user)
+        return Loan.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -122,10 +106,7 @@ class RegisterLoan22(FacilitiesWelfareAccessMixin,DefineRegisterLoan,CreateView)
     template_name = "FacilitiesWelfare/Loan/RegisterLoan.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return RegisterLoan.objects.all()
-        else:
-            return RegisterLoan.objects.filter(author=self.request.user)
+        return RegisterLoan.objects.all()
 
 class UserLoanList(LoginRequiredMixin,ListView):
     login_url = '/login/'

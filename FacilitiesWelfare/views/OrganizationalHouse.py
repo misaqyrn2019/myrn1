@@ -27,10 +27,7 @@ class OrganizationalHouseList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/OrganizationalHouse/OrganizationalHouse_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return OrganizationalHouse.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return OrganizationalHouse.objects.filter(author=self.request.user)
+        return OrganizationalHouse.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -48,10 +45,7 @@ class OrganizationalHouseCreate(FacilitiesWelfareAccessMixin,DefineOrganizationa
     template_name = "FacilitiesWelfare/OrganizationalHouse/OrganizationalHouse-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return OrganizationalHouse.objects.all()
-        else:
-            return OrganizationalHouse.objects.filter(author=self.request.user)
+        return OrganizationalHouse.objects.all()
 
 class OrganizationalHouseUpdate(FacilitiesWelfareAccessMixin,DefineOrganizationalHouse,UpdateView):
     model = OrganizationalHouse
@@ -59,10 +53,7 @@ class OrganizationalHouseUpdate(FacilitiesWelfareAccessMixin,DefineOrganizationa
     template_name = "FacilitiesWelfare/OrganizationalHouse/OrganizationalHouse-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return OrganizationalHouse.objects.all()
-        else:
-            return OrganizationalHouse.objects.filter(author=self.request.user)
+        return OrganizationalHouse.objects.all()
 
 class OrganizationalHouseDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = OrganizationalHouse

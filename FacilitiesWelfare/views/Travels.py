@@ -27,10 +27,7 @@ class TravelsList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/Travels/Travels_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Travels.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return Travels.objects.filter(author=self.request.user)
+        return Travels.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -48,10 +45,7 @@ class TravelsCreate(FacilitiesWelfareAccessMixin,DefineTravels,CreateView):
     template_name = "FacilitiesWelfare/Travels/Travels-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Travels.objects.all()
-        else:
-            return Travels.objects.filter(author=self.request.user)
+        return Travels.objects.all()
 
 class TravelsUpdate(FacilitiesWelfareAccessMixin,DefineTravels,UpdateView):
     model = Travels
@@ -59,10 +53,7 @@ class TravelsUpdate(FacilitiesWelfareAccessMixin,DefineTravels,UpdateView):
     template_name = "FacilitiesWelfare/Travels/Travels-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Travels.objects.all()
-        else:
-            return Travels.objects.filter(author=self.request.user)
+        return Travels.objects.all()
 
 class TravelsDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = Travels

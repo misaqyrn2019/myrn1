@@ -30,10 +30,7 @@ class ConsumerItemsList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/ConsumerItems/ConsumerItems_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return ConsumerItems.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return ConsumerItems.objects.filter(author=self.request.user)
+        return ConsumerItems.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -51,10 +48,7 @@ class ConsumerItemsCreate(FacilitiesWelfareAccessMixin,DefineConsumerItems,Creat
     template_name = "FacilitiesWelfare/ConsumerItems/ConsumerItems-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return ConsumerItems.objects.all()
-        else:
-            return ConsumerItems.objects.filter(author=self.request.user)
+        return ConsumerItems.objects.all()
 
 class ConsumerItemsUpdate(FacilitiesWelfareAccessMixin,DefineConsumerItems,UpdateView):
     model = ConsumerItems
@@ -62,10 +56,7 @@ class ConsumerItemsUpdate(FacilitiesWelfareAccessMixin,DefineConsumerItems,Updat
     template_name = "FacilitiesWelfare/ConsumerItems/ConsumerItems-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return ConsumerItems.objects.all()
-        else:
-            return ConsumerItems.objects.filter(author=self.request.user)
+        return ConsumerItems.objects.all()
 
 class ConsumerItemsDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = ConsumerItems

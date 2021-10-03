@@ -27,10 +27,7 @@ class ProjectList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/Projects/Projects_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Project.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return Project.objects.filter(author=self.request.user)
+        return Project.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -48,10 +45,7 @@ class ProjectCreate(FacilitiesWelfareAccessMixin,DefineProjects,CreateView):
     template_name = "FacilitiesWelfare/Projects/Projects-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return Project.objects.all()
-        else:
-            return Project.objects.filter(author=self.request.user)
+        return Project.objects.all()
 
 class ProjectUpdate(FacilitiesWelfareAccessMixin,DefineProjects,UpdateView):
     model = Project
@@ -59,11 +53,7 @@ class ProjectUpdate(FacilitiesWelfareAccessMixin,DefineProjects,UpdateView):
     template_name = "FacilitiesWelfare/Projects/Projects-create-update.html"
 
     def get_queryset(self):
-        print('************************************************')
-        if self.request.user.is_FacilitiesWelfare:
-            return Project.objects.all()
-        else:
-            return Project.objects.filter(author=self.request.user)
+        return Project.objects.all()
 
 class ProjectDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = Project
@@ -112,10 +102,7 @@ class TypeProjectList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/Projects/TypeProjects_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return TypeProject.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return TypeProject.objects.filter(author=self.request.user)
+        return TypeProject.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -133,10 +120,7 @@ class TypeProjectCreate(FacilitiesWelfareAccessMixin,DefineTypeProjects,CreateVi
     template_name = "FacilitiesWelfare/Projects/TypeProjects-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return TypeProject.objects.all()
-        else:
-            return TypeProject.objects.filter(author=self.request.user)
+        return TypeProject.objects.all()
 
 class TypeProjectUpdate(FacilitiesWelfareAccessMixin,DefineTypeProjects,UpdateView):
     model = TypeProject
@@ -144,10 +128,7 @@ class TypeProjectUpdate(FacilitiesWelfareAccessMixin,DefineTypeProjects,UpdateVi
     template_name = "FacilitiesWelfare/Projects/TypeProjects-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return TypeProject.objects.all()
-        else:
-            return TypeProject.objects.filter(author=self.request.user)
+        return TypeProject.objects.all()
 
 class TypeProjectDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = TypeProject

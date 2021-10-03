@@ -31,10 +31,7 @@ class ConsumerItemsRegisterList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/ConsumerItemsRegister/ConsumerItemsRegister_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return ConsumerItemsRegister.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return ConsumerItemsRegister.objects.filter(author=self.request.user)
+        return ConsumerItemsRegister.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -52,10 +49,7 @@ class ConsumerItemsRegisterCreate(FacilitiesWelfareAccessMixin,DefineConsumerIte
     template_name = "FacilitiesWelfare/ConsumerItemsRegister/ConsumerItemsRegister-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return ConsumerItemsRegister.objects.all()
-        else:
-            return ConsumerItemsRegister.objects.filter(author=self.request.user)
+        return ConsumerItemsRegister.objects.all()
 
 class ConsumerItemsRegisterUpdate(FacilitiesWelfareAccessMixin,DefineConsumerItemsRegister,UpdateView):
     model = ConsumerItemsRegister
@@ -63,10 +57,7 @@ class ConsumerItemsRegisterUpdate(FacilitiesWelfareAccessMixin,DefineConsumerIte
     template_name = "FacilitiesWelfare/ConsumerItemsRegister/ConsumerItemsRegister-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return ConsumerItemsRegister.objects.all()
-        else:
-            return ConsumerItemsRegister.objects.filter(author=self.request.user)
+        return ConsumerItemsRegister.objects.all()
 
 class ConsumerItemsRegisterDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = ConsumerItemsRegister

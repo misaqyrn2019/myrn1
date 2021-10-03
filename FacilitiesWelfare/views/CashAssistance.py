@@ -28,10 +28,7 @@ class CashAssistanceList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/CashAssistance/CashAssistance_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return CashAssistance.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return CashAssistance.objects.filter(author=self.request.user)
+        return CashAssistance.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -49,10 +46,7 @@ class CashAssistanceCreate(FacilitiesWelfareAccessMixin,DefineCachAssistance,Cre
     template_name = "FacilitiesWelfare/CashAssistance/CashAssistance-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return CashAssistance.objects.all()
-        else:
-            return CashAssistance.objects.filter(author=self.request.user)
+        return CashAssistance.objects.all()
 
 class CashAssistanceUpdate(FacilitiesWelfareAccessMixin,DefineCachAssistance,UpdateView):
     model = CashAssistance
@@ -60,10 +54,7 @@ class CashAssistanceUpdate(FacilitiesWelfareAccessMixin,DefineCachAssistance,Upd
     template_name = "FacilitiesWelfare/CashAssistance/CashAssistance-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return CashAssistance.objects.all()
-        else:
-            return CashAssistance.objects.filter(author=self.request.user)
+        return CashAssistance.objects.all()
 
 class CashAssistanceDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = CashAssistance

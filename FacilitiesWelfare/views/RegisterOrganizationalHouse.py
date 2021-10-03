@@ -27,10 +27,7 @@ class RegisterOrganizationalHouseList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/OrganizationalHouse/RegisterOrganizationalHouse_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return RegisterOrganizationalHouse.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return RegisterOrganizationalHouse.objects.filter(author=self.request.user)
+        return RegisterOrganizationalHouse.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -48,10 +45,7 @@ class RegisterOrganizationalHouseCreate(FacilitiesWelfareAccessMixin,DefineRegis
     template_name = "FacilitiesWelfare/OrganizationalHouse/RegisterOrganizationalHouse-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return RegisterOrganizationalHouse.objects.all()
-        else:
-            return RegisterOrganizationalHouse.objects.filter(author=self.request.user)
+        return RegisterOrganizationalHouse.objects.all()
 
 class RegisterOrganizationalHouseUpdate(FacilitiesWelfareAccessMixin,DefineRegisterOrganizationalHouse,UpdateView):
     model = RegisterOrganizationalHouse
@@ -59,10 +53,7 @@ class RegisterOrganizationalHouseUpdate(FacilitiesWelfareAccessMixin,DefineRegis
     template_name = "FacilitiesWelfare/OrganizationalHouse/RegisterOrganizationalHouse-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return RegisterOrganizationalHouse.objects.all()
-        else:
-            return RegisterOrganizationalHouse.objects.filter(author=self.request.user)
+        return RegisterOrganizationalHouse.objects.all()
 
 class RegisterOrganizationalHouseDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = RegisterOrganizationalHouse

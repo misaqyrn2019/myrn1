@@ -27,10 +27,7 @@ class RelativesDeathServicesList(FacilitiesWelfareAccessMixin,ListView):
     template_name = "FacilitiesWelfare/RelativesDeathServices/RelativesDeathServices_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return RelativesDeathServices.objects.all()
-        elif self.request.User.is_FacilitiesWelfare:
-            return RelativesDeathServices.objects.filter(author=self.request.user)
+        return RelativesDeathServices.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -48,10 +45,7 @@ class RelativesDeathServicesCreate(FacilitiesWelfareAccessMixin,DefineRelativesD
     template_name = "FacilitiesWelfare/RelativesDeathServices/RelativesDeathServices-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return RelativesDeathServices.objects.all()
-        else:
-            return RelativesDeathServices.objects.filter(author=self.request.user)
+        return RelativesDeathServices.objects.all()
 
 class RelativesDeathServicesUpdate(FacilitiesWelfareAccessMixin,DefineRelativesDeathServices,UpdateView):
     model = RelativesDeathServices
@@ -59,10 +53,7 @@ class RelativesDeathServicesUpdate(FacilitiesWelfareAccessMixin,DefineRelativesD
     template_name = "FacilitiesWelfare/RelativesDeathServices/RelativesDeathServices-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_FacilitiesWelfare:
-            return RelativesDeathServices.objects.all()
-        else:
-            return RelativesDeathServices.objects.filter(author=self.request.user)
+        return RelativesDeathServices.objects.all()
 
 class RelativesDeathServicesDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = RelativesDeathServices
@@ -70,10 +61,7 @@ class RelativesDeathServicesDelete(FacilitiesWelfareAccessMixin,DeleteView):
     template_name = "FacilitiesWelfare/RelativesDeathServices/RelativesDeathServices_confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return RelativesDeathServices.objects.all()
-        elif self.request.user.is_storekeeper:
-            return RelativesDeathServices.objects.filter(author=self.request.user)
+        return RelativesDeathServices.objects.all()
 
 class UserRelativesDeathServices(LoginRequiredMixin,ListView):
     login_url = '/login/'
