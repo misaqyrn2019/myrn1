@@ -29,33 +29,32 @@
 {% endblock %}
 {% block main %}
 {% if productRepaired %}
-    <table class="table table-report">
+    <table class="tableResponse">
         <thead>
-            <th colspan="8">لیست مشتری ها</th>
+            <tr>
+                <th>انبار</th>
+                <th>نام کالا</th>
+                <th>مشتری</th>
+                <th>سریال کالا</th>
+                <th>تاریخ ثبت</th>
+                <th>تاریخ تحویل</th>
+                <th>توضیحات</th>
+            </tr>
         </thead>
-        <tr>
-            <th>انبار</th>
-            <th>نام کالا</th>
-            <th>مشتری</th>
-            <th>سریال کالا</th>
-            <th>تاریخ ثبت</th>
-            <th>تاریخ تحویل</th>
-            <th>توضیحات</th>
-        </tr>
-    {% for item in productRepaired %}
-        <tr>
-            <td>{{item.IdStoreroom}}</td>
-            <td>{{item.IdCommodity}}</td>
-            <td>{{item.IdCustomer}}</td>
-            <td>{{item.SerialNumber}}</td>
-            <td>{{item.jDateRegistration}}</td>
-            <td>{{item.jDateDelivery}}</td>
-            <td>{{item.Description|safe}}</td>
-        </tr>
-    {% empty %}
-        <h2 style="text-align: center;">هنوز مشتری ثبت نشده است</h2>
-    {% endfor %}
-</table>
+        <tbody>
+            {% for item in productRepaired %}
+                <tr>
+                    <td data-label="انبار">{{item.IdStoreroom}}</td>
+                    <td data-label="نام کالا">{{item.IdCommodity}}</td>
+                    <td data-label="مشتری">{{item.IdCustomer}}</td>
+                    <td data-label="سریال کالا">{{item.SerialNumber}}</td>
+                    <td data-label="تاریخ ثبت">{{item.jDateRegistration}}</td>
+                    <td data-label="تاریخ تحویل">{{item.jDateDelivery}}</td>
+                    <td data-label="توضیحات">{{item.Description|safe}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% else %}
     <h2 style="text-align: center;">هنوز مشتری ثبت نشده است</h2>
 {% endif %}

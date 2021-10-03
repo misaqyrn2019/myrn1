@@ -12,40 +12,43 @@
 
 {% block main %}
     {% if object_list %}
-    <div style="min-height:200px;">
-        <div class="row text-center">
-            <div class="col-1"><b>ردیف</b></div>
-            <div class="col-1"><b>نوع</b></div>
-            <div class="col-2"><b>تاریخ</b></div>
-            <div class="col-1"><b>مبلغ</b></div>
-            <div class="col-2"><b>توضیحات</b></div>
-            <div class="col-1"><b>آدرس</b></div>
-            <div class="col-1"><b>تلفن</b></div>
-            <div class="col-1"><b>شماره سند</b></div>
-            <div class="col-1"><b>انبار</b></div>
-            <div class="col-2"><b>عملیات</b></div>
-        </div>
-        {% for item in object_list %}
-            <div class="row text-center">
-                <div class="col-1">{{item.Id}}</div>
-                <div class="col-1">{{item.Type}}</div>
-                <div class="col-2">{{item.jDate}}</div>
-                <div class="col-1">{{item.Amount}}</div>
-                <div class="col-2">{{item.Description|safe}}</div>
-                <div class="col-1">{{item.Address|safe}}</div>
-                <div class="col-1">{{item.Telephone}}</div>
-                <div class="col-1">{{item.ReceiptNumber}}</div>
-                <div class="col-1">{{item.IdStoreroom}}</div>
-                <div class="col-sm-2">
-                    {% if user.is_superuser or user.is_storekeeper %}
-                    <a class="badge text-danger" href="{% url 'inventory:SettlementArrived-Delete' item.pk %}">حذف</a>
-                    <a class="badge text-succsess" href="{% url 'inventory:SettlementArrived-update' item.pk %}">ویرایش</a>
-                    {% endif %}
-                </div>
-                <div class="offset-4"></div>
-            </div>
-        {% endfor %}
-    </div>
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>نوع</th>
+                <th>تاریخ</th>
+                <th>مبلغ</th>
+                <th>توضیحات</th>
+                <th>آدرس</th>
+                <th>تلفن</th>
+                <th>شماره سند</th>
+                <th>انبار</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="ردیف">{{item.Id}}</td>
+                    <td data-label="نوع">{{item.Type}}</td>
+                    <td data-label="تاریخ">{{item.jDate}}</td>
+                    <td data-label="مبلغ">{{item.Amount}}</td>
+                    <td data-label="توضیحات">{{item.Description|safe}}</td>
+                    <td data-label="آدرس">{{item.Address|safe}}</td>
+                    <td data-label="تلفن">{{item.Telephone}}</td>
+                    <td data-label="شماره سند">{{item.ReceiptNumber}}</td>
+                    <td data-label="انبار">{{item.IdStoreroom}}</td>
+                    <td data-label="عملیات">
+                        {% if user.is_superuser or user.is_storekeeper %}
+                        <a class="badge text-danger" href="{% url 'inventory:SettlementArrived-Delete' item.pk %}">حذف</a>
+                        <a class="badge text-succsess" href="{% url 'inventory:SettlementArrived-update' item.pk %}">ویرایش</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <div class="row pagination">
         <span class="step-links">
             {% if is_paginated %}

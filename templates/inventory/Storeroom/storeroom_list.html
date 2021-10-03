@@ -11,42 +11,46 @@
 
 {% block main %}
     {% if object_list %}
-    <div style="min-height:200px;">
-        <div class="row text-center">
-            <div class="col-sm-2"><b>نام انبار</b></div>
-            <div class="col-sm-2"><b>شهر</b></div>
-            <div class="col-sm-2"><b>آدرس انبار</b></div>
-            <div class="col-sm-2"><b>وضعیت انبار</b></div>
-            <div class="col-sm-4"><b>عملیات</b></div>
-        </div>
-        {% for item in object_list %}
-            <div class="row text-center">
-                <div class="col-sm-2">
-                    <a href="{% url 'inventory:StoreroomListReport' IdStoreroom=item.Id %}" target="_blank">
-                        {{item.Name}}
-                    </a>
-                </div>
-                <div class="col-sm-2">{{item.IdCity}}</div>
-                <div class="col-sm-2">{{item.Address|safe}}</div>
-                <div class="col-sm-2">
-                {% if item.status == "A"%}
-                    فعال
-                {% elif item.status == "N" %}
-                    غیر فعال
-                {% endif %}
-                </div>
-                <div class="col-sm-4">
-                    {% if user.is_superuser or user.is_storekeeper %}
-                    <a class="badge text-danger" href="{% url 'inventory:Storeroom-Delete' item.pk %}">حذف</a>
-                    <a class="badge text-succsess" href="{% url 'inventory:Storeroom-update' item.pk %}">ویرایش</a>
-                    <a href="{% url 'inventory:StoreroomListReport' IdStoreroom=item.Id %}" target="_blank">
-                        گزارش اقلام {{item.Name}}
-                    </a>
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>نام انبار</th>
+                <th>شهر</th>
+                <th>آدرس انبار</th>
+                <th>وضعیت انبار</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="نام انبار">
+                        <a href="{% url 'inventory:StoreroomListReport' IdStoreroom=item.Id %}" target="_blank">
+                            {{item.Name}}
+                        </a>
+                    </td>
+                    <td data-label="شهر">{{item.IdCity}}</td>
+                    <td data-label="آدرس انبار">{{item.Address|safe}}</td>
+                    <td data-label="وضعیت انبار">
+                    {% if item.status == "A"%}
+                        فعال
+                    {% elif item.status == "N" %}
+                        غیر فعال
                     {% endif %}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+                    </td>
+                    <td data-label="عملیات">
+                        {% if user.is_superuser or user.is_storekeeper %}
+                        <a class="badge text-danger" href="{% url 'inventory:Storeroom-Delete' item.pk %}">حذف</a>
+                        <a class="badge text-succsess" href="{% url 'inventory:Storeroom-update' item.pk %}">ویرایش</a>
+                        <a href="{% url 'inventory:StoreroomListReport' IdStoreroom=item.Id %}" target="_blank">
+                            گزارش اقلام {{item.Name}}
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <div class="row pagination">
         <span class="step-links">
             {% if is_paginated %}

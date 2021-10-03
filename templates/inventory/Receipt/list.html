@@ -11,33 +11,36 @@
 
 {% block main %}
     {% if object_list %}
-    <div style="min-height:200px;" class="table table-responsive">
-        <div class="row text-center">
-            <div class="col-1"><b>ردیف</b></div>
-            <div class="col-1"><b>کالا</b></div>
-            <div class="col-1"><b>واحد سنجش</b></div>
-            <div class="col-1"><b>تعداد</b></div>
-            <div class="col-1"><b>مبلغ</b></div>
-            <div class="col-1"><b>تخفیف</b></div>
-            <div class="col-1"><b>مالیات</b></div>
-            <div class="col-1"><b>تاریخ فاکتور</b></div>
-            <div class="col-1"><b>مشتری</b></div>
-            <div class="col-1"><b>انبار</b></div>
-            <div class="col-1"><b>نوع</b></div>
-            <div class="col-1"><b>عملیات</b></div>
-        </div>
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>کالا</th>
+                <th>واحد سنجش</th>
+                <th>تعداد</th>
+                <th>مبلغ</th>
+                <th>تخفیف</th>
+                <th>مالیات</th>
+                <th>تاریخ فاکتور</th>
+                <th>مشتری</th>
+                <th>انبار</th>
+                <th>نوع</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for item in object_list %}
-            <div class="row text-center">
-                <div class="col-1">{{item.Id}}</div>
-                <div class="col-1">{{item.IdCommodity}}</div>
-                <div class="col-1">{{item.IdUnitofMeasurement}}</div>
-                <div class="col-1">{{item.Count}}</div>
-                <div class="col-1">{{item.Amount}}</div>
-                <div class="col-1">{{item.Discount}}</div>
-                <div class="col-1">{{item.Taxation}}</div>
-                <div class="col-1">{{item.jDate}}</div>
-                <div class="col-1">{{item.IdCustomer}}</div>
-                <div class="col-1">
+            <tr>
+                <td data-label="ردیف">{{item.Id}}</td>
+                <td data-label="کالا">{{item.IdCommodity}}</td>
+                <td data-label="واحد سنجش">{{item.IdUnitofMeasurement}}</td>
+                <td data-label="تعداد">{{item.Count}}</td>
+                <td data-label="مبلغ">{{item.Amount}}</td>
+                <td data-label="تخفیف">{{item.Discount}}</td>
+                <td data-label="مالیات">{{item.Taxation}}</td>
+                <td data-label="تاریخ فاکتور">{{item.jDate}}</td>
+                <td data-label="مشتری">{{item.IdCustomer}}</td>
+                <td data-label="انبار">
                     {% if item.Type == 'B' %}
                         <a href="{% url 'inventory:Receipt-ReportStoreroomBuy' item.IdStoreroom.Id %}" target="_blank">
                             {{item.IdStoreroom}}
@@ -47,23 +50,24 @@
                             {{item.IdStoreroom}}
                         </a>
                     {% endif %}
-                </div>
-                <div class="col-1">
+                </td>
+                <td data-label="نوع">
                     {% if item.Type == 'B' %}
                         <p>خرید</p>
                     {% elif item.Type == 'S' %}
                         <p>فروش</p>
                     {% endif %}
-                </div>
-                <div class="col-1">
+                </td>
+                <td data-label="عملیات">
                     {% if user.is_superuser or user.is_storekeeper %}
                     <a class="badge text-danger" href="{% url 'inventory:Receipt-Delete' item.pk %}">حذف</a>
                     <a class="badge text-succsess" href="{% url 'inventory:Receipt-update' item.pk %}">ویرایش</a>
                     {% endif %}
-                </div>
-            </div>
+                </td>
+            </tr>
         {% endfor %}
-    </div>
+        </tbody>
+    </table>
     <div class="row pagination">
         <span class="step-links">
             {% if is_paginated %}

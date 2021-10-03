@@ -12,47 +12,51 @@
 
 {% block main %}
     {% if object_list %}
-    <div style="min-height:200px;">
-        <div class="row text-center">
-            <div class="col-sm-1"><b>ردیف</b></div>
-            <div class="col-sm-1"><b>نام کالا</b></div>
-            <div class="col-sm-1"><b>نام انبار</b></div>
-            <div class="col-sm-1"><b>نام مشتری</b></div>
-            <div class="col-sm-1"><b>تاریخ ورود</b></div>
-            <div class="col-sm-1"><b>تاریخ انقضا</b></div>
-            <div class="col-sm-1"><b>سریال</b></div>
-            <div class="col-sm-1"><b>وضعیت</b></div>
-            <div class="col-sm-2"><b>توضیحات</b></div>
-            <div class="col-sm-2"><b>عملیات</b></div>
-        </div>
-        {% for item in object_list %}
-            <div class="row text-center">
-                <div class="col-sm-1">{{item.Id}}</div>
-                <div class="col-sm-1">{{item.IdCommodity}}</div>
-                <div class="col-sm-1">{{item.IdStoreroom}}</div>
-                <div class="col-sm-1">{{item.IdCustomer}}</div>
-                <div class="col-sm-1">{{item.jDateEntry}}</div>
-                <div class="col-sm-1">{{item.jDateExpired}}</div>
-                <div class="col-sm-1">{{item.Serial}}</div>
-                <div class="col-sm-1">
-                    {% if item.Status == 'i' %}
-                        ورود کالا
-                    {% elif  item.Status == 'o' %}
-                        خروج کالا
-                    {% elif  item.Status == 'r' %}
-                        مرجوعی کالا
-                    {% endif %}
-                </div>
-                <div class="col-sm-2">{{item.Description|safe}}</div>
-                <div class="col-sm-2">
-                    {% if user.is_superuser or user.is_storekeeper %}
-                    <a class="badge text-danger" href="{% url 'inventory:EntryCommodity-Delete' item.pk %}">حذف</a>
-                    <a class="badge text-succsess" href="{% url 'inventory:EntryCommodity-update' item.pk %}">ویرایش</a>
-                    {% endif %}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>نام کالا</th>
+                <th>نام انبار</th>
+                <th>نام مشتری</th>
+                <th>تاریخ ورود</th>
+                <th>تاریخ انقضا</th>
+                <th>سریال</th>
+                <th>وضعیت</th>
+                <th>توضیحات</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="ردیف">{{item.Id}}</td>
+                    <td data-label="نام کالا">{{item.IdCommodity}}</td>
+                    <td data-label="نام انبار">{{item.IdStoreroom}}</td>
+                    <td data-label="نام مشتری">{{item.IdCustomer}}</td>
+                    <td data-label="تاریخ ورود">{{item.jDateEntry}}</td>
+                    <td data-label="تاریخ انقضا">{{item.jDateExpired}}</td>
+                    <td data-label="سریال">{{item.Serial}}</td>
+                    <td data-label="وضعیت">
+                        {% if item.Status == 'i' %}
+                            ورود کالا
+                        {% elif  item.Status == 'o' %}
+                            خروج کالا
+                        {% elif  item.Status == 'r' %}
+                            مرجوعی کالا
+                        {% endif %}
+                    </td>
+                    <td data-label="توضیحات">{{item.Description|safe}}</td>
+                    <td data-label="عملیات">
+                        {% if user.is_superuser or user.is_storekeeper %}
+                        <a class="badge text-danger" href="{% url 'inventory:EntryCommodity-Delete' item.pk %}">حذف</a>
+                        <a class="badge text-succsess" href="{% url 'inventory:EntryCommodity-update' item.pk %}">ویرایش</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <div class="row pagination">
         <span class="step-links">
             {% if is_paginated %}

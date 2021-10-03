@@ -11,26 +11,24 @@
 		<div class="card-body">
 			<form method="post" enctype="multipart/form-data">{% csrf_token %}
 				<div class="row">
-					<div class="col-2">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdCommodity|as_crispy_field }}
 					</div>
-					<div class="col-2">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdCustomer|as_crispy_field }}
 					</div>
-					<div class="col-2">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdStoreroom|as_crispy_field }}
 					</div>
-					<div class="col-2">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.SerialNumber|as_crispy_field }}
 					</div>
-					<div class="col-2">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.DateDelivery|as_crispy_field }}
 					</div>
-					<div class="col-2">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{form.Status|as_crispy_field}}
 					</div>
-				</div>
-				<div class="row">
 					<div class="col-12">
 						{{ form.Description|as_crispy_field }}
 					</div>

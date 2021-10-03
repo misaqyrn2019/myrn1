@@ -29,33 +29,37 @@
 {% endblock %}
 {% block main %}
 {% if ReceiptSale %}
-    <table class="table table-responsive">
-        <tr>
-            <td>ردیف</td>
-            <td>کالا</td>
-            <td>واحد سنجش</td>
-            <td>تعداد</td>
-            <td>مبلغ</td>
-            <td>تخفیف</td>
-            <td>مالیات</td>
-            <td>تاریخ فاکتور</td>
-            <td>مشتری</td>
-            <td>انبار</td>
-        </tr>
-        {% for item in ReceiptSale %}
+    <table class="tableResponse">
+        <thead>
             <tr>
-                <td>{{item.Id}}</td>
-                <td>{{item.IdCommodity}}</td>
-                <td>{{item.IdUnitofMeasurement}}</td>
-                <td>{{item.Count}}</td>
-                <td>{{item.Amount}}</td>
-                <td>{{item.Discount}}</td>
-                <td>{{item.Taxation}}</td>
-                <td>{{item.jDate}}</td>
-                <td>{{item.IdCustomer}}</td>
-                <td>{{item.IdStoreroom}}</td>
+                <th>ردیف</th>
+                <th>کالا</th>
+                <th>واحد سنجش</th>
+                <th>تعداد</th>
+                <th>مبلغ</th>
+                <th>تخفیف</th>
+                <th>مالیات</th>
+                <th>تاریخ فاکتور</th>
+                <th>مشتری</th>
+                <th>انبار</th>
             </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+            {% for item in ReceiptSale %}
+                <tr>
+                    <td data-label="ردیف">{{item.Id}}</td>
+                    <td data-label="کالا">{{item.IdCommodity}}</td>
+                    <td data-label="واحد سنجش">{{item.IdUnitofMeasurement}}</td>
+                    <td data-label="تعداد">{{item.Count}}</td>
+                    <td data-label="مبلغ">{{item.Amount}}</td>
+                    <td data-label="تخفیف">{{item.Discount}}</td>
+                    <td data-label="مالیات">{{item.Taxation}}</td>
+                    <td data-label="تاریخ فاکتور">{{item.jDate}}</td>
+                    <td data-label="مشتری">{{item.IdCustomer}}</td>
+                    <td data-label="انبار">{{item.IdStoreroom}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
 </table>
 {% else %}
     <h2 style="text-align: center;">فاکتور فروش خالی است</h2s>

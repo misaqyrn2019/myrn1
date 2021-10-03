@@ -29,44 +29,41 @@
 {% endblock %}
 {% block main %}
 {% if ListCommodity %}
-    <table class="table table-report">
+    <table class="tableResponse">
         <thead>
-            <th colspan="8">
-                همه ی کالاهای موجود
-            </th>
+            <tr>
+                <th>شناسه کالا</th>
+                <th>نام کالا</th>
+                <th>انبار</th>
+                <th>تاریخ ورود</th>
+                <th>واحد سنجش</th>
+                <th>مقدار</th>
+                <th>مبلغ واحد</th>
+                <th>مبلغ کل (ریال)</th>
+                <th>توضیحات</th>
+            </tr>
         </thead>
-        <tr>
-            <th>شناسه کالا</th>
-            <th>نام کالا</th>
-            <th>انبار</th>
-            <th>تاریخ ورود</th>
-            <th>واحد سنجش</th>
-            <th>مقدار</th>
-            <th>مبلغ واحد</th>
-            <th>مبلغ کل (ریال)</th>
-            <th>توضیحات</th>
-        </tr>
-    {% for item in ListCommodity %}
-        <tr>
-            <td>{{item.Id}}</td>
-            <td>{{item.Name}}</td>
-            <th>{{item.IdStoreroom}}</th>
-            <td>{{item.jEntryDateTime}}</td>
-            <td>{{item.IdUnitofMeasurement}}</td>
-            <td>{{item.UnitPackCount|apnumber}}</td>
-            <td>{{item.UnitPrice|apnumber|intcomma}}</td>
-            <td>{{item.amount}}</td>
-            <td>{{item.Description|safe}}</td>
-        </tr>
-    {% empty %}
-    <h2 style="text-align: center;">از این تامین کننده کالایی وارد نشده است</h2s>
-    {% endfor %}
-    <tr>
-        <td colspan="7">جمع</td>
-        <td>{{SumPrice|intcomma}} ريال</td>
-        <td></td>
-    </tr>
-</table>
+        <tbody>
+            {% for item in ListCommodity %}
+                <tr>
+                    <td data-label="شناسه کالا">{{item.Id}}</td>
+                    <td data-label="نام کالا">{{item.Name}}</td>
+                    <th data-label="انبار">{{item.IdStoreroom}}</th>
+                    <td data-label="تاریخ ورود">{{item.jEntryDateTime}}</td>
+                    <td data-label="واحد سنجش">{{item.IdUnitofMeasurement}}</td>
+                    <td data-label="مقدار">{{item.UnitPackCount|apnumber}}</td>
+                    <td data-label="مبلغ واحد">{{item.UnitPrice|apnumber|intcomma}}</td>
+                    <td data-label="مبلغ کل (ریال)">{{item.amount}}</td>
+                    <td data-label="توضیحات">{{item.Description|safe}}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="7">جمع</td>
+                <td>{{SumPrice|intcomma}} ريال</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
 {% else %}
     <h2 style="text-align: center;">از این تامین کننده کالایی وارد نشده است</h2s>
 {% endif %}

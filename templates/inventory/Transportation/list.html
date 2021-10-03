@@ -12,31 +12,34 @@
 
 {% block main %}
     {% if object_list %}
-    <div style="min-height:200px;">
-        <div class="row text-center">
-            <div class="col-sm-1">ردیف</div>
-            <div class="col-sm-1">راننده</div>
-            <div class="col-sm-1">فرستنده</div>
-            <div class="col-sm-1">گیرنده</div>
-            <div class="col-sm-1">شماره باربری</div>
-            <div class="col-sm-1">آدرس مبدا</div>
-            <div class="col-sm-2">تاریخ ثبت</div>
-            <div class="col-sm-1">کالا</div>
-            <div class="col-sm-2">توضیحات</div>
-            <div class="col-sm-1"><b>عملیات</b></div>
-        </div>
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>راننده</th>
+                <th>فرستنده</th>
+                <th>گیرنده</th>
+                <th>شماره باربری</th>
+                <th>آدرس مبدا</th>
+                <th>تاریخ ثبت</th>
+                <th>کالا</th>
+                <th>توضیحات</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for item in object_list %}
             <div class="row text-center">
-                <div class="col-sm-1">{{item.Id}}</div>
-                <div class="col-sm-1">{{item.IdDrivers}}</div>
-                <div class="col-sm-1">{{item.Sender}}</div>
-                <div class="col-sm-1">{{item.Transferee}}</div>
-                <div class="col-sm-1">{{item.FreightNumber}}</div>
-                <div class="col-sm-1">{{item.SourceAddress}}</div>
-                <div class="col-sm-2">{{item.jDate}}</div>
-                <div class="col-sm-1">{{item.IdEntryCommodity}}</div>
-                <div class="col-sm-2">{{item.Description|safe}}</div>
-                <div class="col-sm-1">
+                <td data-label="ردیف">{{item.Id}}</td>
+                <td data-label="راننده">{{item.IdDrivers}}</td>
+                <td data-label="فرستنده">{{item.Sender}}</td>
+                <td data-label="گیرنده">{{item.Transferee}}</td>
+                <td data-label="شماره باربری">{{item.FreightNumber}}</td>
+                <td data-label="آدرس مبدا">{{item.SourceAddress}}</td>
+                <td data-label="تاریخ ثبت">{{item.jDate}}</td>
+                <td data-label="کالا">{{item.IdEntryCommodity}}</td>
+                <td data-label="توضیحات">{{item.Description|safe}}</td>
+                <td data-label="عملیات">
                     {% if user.is_superuser or user.is_storekeeper %}
                     <a class="badge text-danger" href="{% url 'inventory:Transportation-Delete' item.pk %}">حذف</a>
                     <a class="badge text-succsess" href="{% url 'inventory:Transportation-update' item.pk %}">ویرایش</a>
@@ -44,7 +47,8 @@
                 </div>
             </div>
         {% endfor %}
-    </div>
+        </tbody>
+    </table>
     <div class="row pagination">
         <span class="step-links">
             {% if is_paginated %}

@@ -32,50 +32,49 @@
 {% endblock %}
 {% block main %}
 {% if object_list %}
-    <table class="table table-report">
+    <table class="tableResponse">
         <thead>
-            <th colspan="8">لیست مشتری ها</th>
+            <tr>
+                <th>شماره مشتری</th>
+                <th>نام</th>
+                <th>فامیل</th>
+                <th>شماره همراه</th>
+                <th>شماره تماس</th>
+                <th>شماره ثبت</th>
+                <th>شماره اقتصادی</th>
+                <th>کد ملی</th>
+                <th>کد پستی</th>
+                <th>آدرس</th>
+                <th>مانده اول دوره</th>
+                <th>وضعیت</th>
+            </tr>
         </thead>
-        <tr>
-            <th>شماره مشتری</th>
-            <th>نام</th>
-            <th>فامیل</th>
-            <th>شماره همراه</th>
-            <th>شماره تماس</th>
-            <th>شماره ثبت</th>
-            <th>شماره اقتصادی</th>
-            <th>کد ملی</th>
-            <th>کد پستی</th>
-            <th>آدرس</th>
-            <th>مانده اول دوره</th>
-            <th>وضعیت</th>
-        </tr>
-    {% for item in object_list %}
-        <tr>
-            <td>{{item.AccountSideCode}}</td>
-            <td>{{item.Name}}</td>
-            <td>{{item.Family}}</td>
-            <td>{{item.Mobile}}</td>
-            <td>{{item.TelephoneCustomer}}</td>
-            <td>{{item.RegistrationNumber}}</td>
-            <td>{{item.EconomicNumber}}</td>
-            <td>{{item.NationalID}}</td>
-            <td>{{item.PostalCode}}</td>
-            <td>{{item.Address|safe}}</td>
-            <td>{{item.FirstBalanceCourse}}</td>
-            <td>
-                {% if item.Status == 'A' %}
-                    <p>بی حساب</p>
-                {% elif item.Status == 'B' %}
-                    <p>بدهکار</p>
-                {% elif item.Status == 'C' %}
-                    <p>بستانکار</p>
-                {% endif %}
-            </td>
-        </tr>
-    {% empty %}
-        <h2 style="text-align: center;">هنوز مشتری ثبت نشده است</h2>
-    {% endfor %}
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="شماره مشتری">{{item.AccountSideCode}}</td>
+                    <td data-label="نام">{{item.Name}}</td>
+                    <td data-label="فامیل">{{item.Family}}</td>
+                    <td data-label="شماره همراه">{{item.Mobile}}</td>
+                    <td data-label="شماره تماس">{{item.TelephoneCustomer}}</td>
+                    <td data-label="شماره ثبت">{{item.RegistrationNumber}}</td>
+                    <td data-label="شماره اقتصادی">{{item.EconomicNumber}}</td>
+                    <td data-label="کدملی">{{item.NationalID}}</td>
+                    <td data-label="کدپستی">{{item.PostalCode}}</td>
+                    <td data-label="آدرس">{{item.Address|safe}}</td>
+                    <td data-label="مانده اول دوره">{{item.FirstBalanceCourse}}</td>
+                    <td data-label="وضعیت">
+                        {% if item.Status == 'A' %}
+                            <p>بی حساب</p>
+                        {% elif item.Status == 'B' %}
+                            <p>بدهکار</p>
+                        {% elif item.Status == 'C' %}
+                            <p>بستانکار</p>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+    </tbody>
 </table>
 {% else %}
     <h2 style="text-align: center;">هنوز مشتری ثبت نشده است</h2>

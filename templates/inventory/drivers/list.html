@@ -1,6 +1,5 @@
 {% extends 'Template/base.html' %}
 
-
 {% block title %}{% block title-meta %}
 	لیست راننده
 {% endblock %}{% endblock %}
@@ -12,33 +11,37 @@
 
 {% block main %}
     {% if object_list %}
-    <div style="min-height:200px;">
-        <div class="row text-center">
-            <div class="col-sm-1"><b>ردیف</b></div>
-            <div class="col-sm-1"><b>نام</b></div>
-            <div class="col-sm-2"><b>نام خانوادگی</b></div>
-            <div class="col-sm-2"><b>نام باربری</b></div>
-            <div class="col-sm-2"><b>شماره همراه</b></div>
-            <div class="col-sm-2"><b>کد ملی</b></div>
-            <div class="col-sm-2"><b>عملیات</b></div>
-        </div>
-        {% for item in object_list %}
-            <div class="row text-center">
-                <div class="col-sm-1">{{item.DriverCode}}</div>
-                <div class="col-sm-1">{{item.Name}}</div>
-                <div class="col-sm-2">{{item.Family}}</div>
-                <div class="col-sm-2">{{item.FreightName}}</div>
-                <div class="col-sm-2">{{item.Telephone}}</div>
-                <div class="col-sm-2">{{item.NationalCode}}</div>
-                <div class="col-sm-2">
-                    {% if user.is_superuser or user.is_storekeeper %}
-                    <a class="badge text-danger" href="{% url 'inventory:drivers-Delete' item.pk %}">حذف</a>
-                    <a class="badge text-succsess" href="{% url 'inventory:drivers-update' item.pk %}">ویرایش</a>
-                    {% endif %}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>نام</th>
+                <th>نام خانوادگی</th>
+                <th>نام باربری</th>
+                <th>شماره همراه</th>
+                <th>کد ملی</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="ردیف">{{item.DriverCode}}</td>
+                    <td data-label="نام">{{item.Name}}</td>
+                    <td data-label="نام خانوادگی">{{item.Family}}</td>
+                    <td data-label="نام باربری">{{item.FreightName}}</td>
+                    <td data-label="شماره همراه">{{item.Telephone}}</td>
+                    <td data-label="کدملی">{{item.NationalCode}}</td>
+                    <td data-label="عملیات">
+                        {% if user.is_superuser or user.is_storekeeper %}
+                        <a class="badge text-danger" href="{% url 'inventory:drivers-Delete' item.pk %}">حذف</a>
+                        <a class="badge text-succsess" href="{% url 'inventory:drivers-update' item.pk %}">ویرایش</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <div class="row pagination">
         <span class="step-links">
             {% if is_paginated %}

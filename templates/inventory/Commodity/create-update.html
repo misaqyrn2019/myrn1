@@ -14,84 +14,66 @@
 		<div class="card-body">
 			<form method="post" enctype="multipart/form-data">{% csrf_token %}
 				<div class="row">
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.Name|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdStoreroom|as_crispy_field }} 
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdUnitPack|as_crispy_field }}
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdGroup|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdCategory|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdSupplier|as_crispy_field }}
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdUnitofMeasurement|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.UnitPackCount|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.ExpirationDate|as_crispy_field }}
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.OrderPoint|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.MinimumInventory|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.OrderAmount|as_crispy_field }}
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.MaximumInventory|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.TechnicalNumber|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.BarCodeText|as_crispy_field }}
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.BarCodeImage|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.UnitPrice|as_crispy_field }}
 					</div>
-					<div class="col-4">
-						
-						
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.TechnicalSpecifications|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.CommoditySpecifications|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.AddressCommodity|as_crispy_field }}
 					</div>
-				</div>
-				<div class="row">
 					<div class="col-12">
 						{{form.Description|as_crispy_field}}
 					</div>

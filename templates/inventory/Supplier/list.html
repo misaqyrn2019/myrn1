@@ -12,34 +12,36 @@
 
 {% block main %}
     {% if object_list %}
-    <div style="min-height:200px;">
-        <div class="row text-center">
-            <div class="col-sm-2"><b>ردیف</b></div>
-            <div class="col-sm-4"><b>نام</b></div>
-            <div class="col-sm-2"><b>عملیات</b></div>
-            <div class="offset-4"></div>
-        </div>
-        {% for item in object_list %}
-            <div class="row text-center">
-                <div class="col-sm-2">{{item.Id}}</div>
-                <div class="col-sm-4">
-                    <a href="{% url 'inventory:SupplierListReport' IdSupplier=item.Id %}" target="_blank">
-                        {{item.Name}}
-                    </a>
-                </div>
-                <div class="col-sm-4">
-                    {% if user.is_superuser or user.is_storekeeper %}
-                    <a class="badge text-danger" href="{% url 'inventory:Supplier-Delete' item.pk %}">حذف</a>
-                    <a class="badge text-succsess" href="{% url 'inventory:Supplier-update' item.pk %}">ویرایش</a>
-                    <a href="{% url 'inventory:SupplierListReport' IdSupplier=item.Id %}" target="_blank">
-                        گزارش {{item.Name}}
-                    </a>
-                    {% endif %}
-                </div>
-                <div class="offset-4"></div>
-            </div>
-        {% endfor %}
-    </div>
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>نام</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="ردیف">{{item.Id}}</td>
+                    <td data-label="نام">
+                        <a href="{% url 'inventory:SupplierListReport' IdSupplier=item.Id %}" target="_blank">
+                            {{item.Name}}
+                        </a>
+                    </td>
+                    <td data-label="عملیات">
+                        {% if user.is_superuser or user.is_storekeeper %}
+                        <a class="badge text-danger" href="{% url 'inventory:Supplier-Delete' item.pk %}">حذف</a>
+                        <a class="badge text-succsess" href="{% url 'inventory:Supplier-update' item.pk %}">ویرایش</a>
+                        <a href="{% url 'inventory:SupplierListReport' IdSupplier=item.Id %}" target="_blank">
+                            گزارش {{item.Name}}
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <div class="row pagination">
         <span class="step-links">
             {% if is_paginated %}

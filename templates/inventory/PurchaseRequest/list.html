@@ -11,57 +11,59 @@
 
 {% block main %}
     {% if object_list %}
-    <div style="min-height:200px;">
-        <div class="row text-center">
-            <div class="col-1"><b>شناسه</b></div>
-            <div class="col-2"><b>نام کالا</b></div>
-            <div class="col-1"><b>واحد</b></div>
-            <div class="col-1"><b>تعداد</b></div>
-            <div class="col-2"><b>نام انبار</b></div>
-            <div class="col-1"><b>منبع خرید</b></div>
-            <div class="col-1"><b>مامور خرید</b></div>
-            <div class="col-1"><b>وضعیت</b></div>
-            <div class="col-2"><b>عملیات</b></div>
-        </div>
-        {% for item in object_list %}
-            <div class="row text-center">
-                <div class="col-1">{{item.Id}}</div>
-                <div class="col-2">
-                    <a href="{% url 'inventory:PurchaseRequest-Report' item.IdCommodity.Id %}" target="_blank">
-                        {{item.IdCommodity}}
-                    </a>
-                </div>
-                <div class="col-1">{{item.IdUnitofMeasurement}}</div>
-                <div class="col-1">{{item.Count}}</div>
-                <div class="col-2">
-                    <a href="{% url 'inventory:PurchaseRequestSR-Report' item.IdStoreroom.Id %}" target="_blank">
-                        {{item.IdStoreroom}}
-                    </a>
-                </div>
-                <div class="col-1">{{item.PurchaseSource}}</div>
-                <div class="col-1">{{item.PurchasingOfficer}}</div>
-                <div class="col-1">
-                    {% if item.Status == 'Y' %}
-                        <label class="badge text-succsess">
-                            خرید شده
-                        </label>
-                    {% elif item.Status == 'N' %}
-                        <label class="badge text-succsess">
-                            خرید نشده
-                        </label>
-                    {% endif %}
-                </div>
-                
-                <div class="col-2">
-                    {% if user.is_superuser or user.is_storekeeper %}
-                    <a class="badge text-danger" href="{% url 'inventory:PurchaseRequest-Delete' item.pk %}">حذف</a>
-                    <a class="badge text-succsess" href="{% url 'inventory:PurchaseRequest-update' item.pk %}">ویرایش</a>
-                    {% endif %}
-                </div>
-                <div class="offset-4"></div>
-            </div>
-        {% endfor %}
-    </div>
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>شناسه</th>
+                <th>نام کالا</th>
+                <th>واحد</th>
+                <th>تعداد</th>
+                <th>نام انبار</th>
+                <th>منبع خرید</th>
+                <th>مامور خرید</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="شناسه">{{item.Id}}</td>
+                    <td data-label="نام کالا">
+                        <a href="{% url 'inventory:PurchaseRequest-Report' item.IdCommodity.Id %}" target="_blank">
+                            {{item.IdCommodity}}
+                        </a>
+                    </td>
+                    <td data-label="واحد">{{item.IdUnitofMeasurement}}</td>
+                    <td data-label="تعداد">{{item.Count}}</td>
+                    <td data-label="نام انبار">
+                        <a href="{% url 'inventory:PurchaseRequestSR-Report' item.IdStoreroom.Id %}" target="_blank">
+                            {{item.IdStoreroom}}
+                        </a>
+                    </td>
+                    <td data-label="منبع خرید">{{item.PurchaseSource}}</td>
+                    <td data-label="مامور خرید">{{item.PurchasingOfficer}}</td>
+                    <td data-label="وضعیت">
+                        {% if item.Status == 'Y' %}
+                            <label class="badge text-succsess">
+                                خرید شده
+                            </label>
+                        {% elif item.Status == 'N' %}
+                            <label class="badge text-succsess">
+                                خرید نشده
+                            </label>
+                        {% endif %}
+                    </td>
+                    <td data-label="عملیات">
+                        {% if user.is_superuser or user.is_storekeeper %}
+                        <a class="badge text-danger" href="{% url 'inventory:PurchaseRequest-Delete' item.pk %}">حذف</a>
+                        <a class="badge text-succsess" href="{% url 'inventory:PurchaseRequest-update' item.pk %}">ویرایش</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <div class="row pagination">
         <span class="step-links">
             {% if is_paginated %}

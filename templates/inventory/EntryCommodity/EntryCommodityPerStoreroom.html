@@ -29,39 +29,38 @@
 {% endblock %}
 {% block main %}
 {% if EntryCommodityPerStoreroom %}
-    <table class="table table-report">
+    <table class="tableResponse">
         <thead>
-            <th colspan="8">{{ECName}} کالا</th>
+            <tr>
+                <th>ردیف</th>
+                <th>نام کالا</th>
+                <th>تعداد</th>
+                <th>نام انبار</th>
+                <th>نام مشتری</th>
+                <th>تاریخ ورود</th>
+                <th>تاریخ انقضا</th>
+                <th>سریال</th>
+                <th>شماره فاکتور</th>
+                <th>توضیحات</th>
+            </tr>
         </thead>
-        <tr>
-            <td>ردیف</td>
-            <td>نام کالا</td>
-            <td>تعداد</td>
-            <td>نام انبار</td>
-            <td>نام مشتری</td>
-            <td>تاریخ ورود</td>
-            <td>تاریخ انقضا</td>
-            <td>سریال</td>
-            <td>شماره فاکتور</td>
-            <td>توضیحات</td>
-        </tr>
-    {% for item in EntryCommodityPerStoreroom %}
-        <tr>
-            <td>{{item.Id}}</td>
-            <td>{{item.IdCommodity}}</td>
-            <td>{{item.Count}}</td>
-            <td>{{item.IdStoreroom}}</td>
-            <td>{{item.IdCustomer}}</td>
-            <td>{{item.jDateEntry}}</td>
-            <td>{{item.jDateExpired}}</td>
-            <td>{{item.Serial}}</td>
-            <td>{{item.InvoiceNumber}}</td>
-            <td>{{item.Description|safe}}</td>
-        </tr>
-    {% empty %}
-        <h2 style="text-align: center;">هنوز کالایی برای این انبار وارد نشده است</h2>
-    {% endfor %}
-</table>
+        <tbody>
+        {% for item in EntryCommodityPerStoreroom %}
+            <tr>
+                <td data-label="ردیف">{{item.Id}}</td>
+                <td data-label="نام کالا">{{item.IdCommodity}}</td>
+                <td data-label="تعداد">{{item.Count}}</td>
+                <td data-label="نام انبار">{{item.IdStoreroom}}</td>
+                <td data-label="نام مشتری">{{item.IdCustomer}}</td>
+                <td data-label="تاریخ ورود">{{item.jDateEntry}}</td>
+                <td data-label="تاریخ انقضا">{{item.jDateExpired}}</td>
+                <td data-label="سریال">{{item.Serial}}</td>
+                <td data-label="شماره فاکتور">{{item.InvoiceNumber}}</td>
+                <td data-label="توضیحات">{{item.Description|safe}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% else %}
     <h2 style="text-align: center;">هنوز کالایی برای این انبار وارد نشده است</h2>
 {% endif %}

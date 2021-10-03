@@ -14,46 +14,40 @@
 		<div class="card-body">
 			<form method="post" enctype="multipart/form-data">{% csrf_token %}
 				<div class="row">
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.Name|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.Family|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.Telephone|as_crispy_field }}
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.NationalCode|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.LicensePlateNumber|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.CarType|as_crispy_field }}
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.FreightName|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.AccountNumber|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.Shabanumber|as_crispy_field }}
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.CardNumber|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.Address|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-12">
 						{{ form.Description|as_crispy_field }}
 					</div>
 				</div>

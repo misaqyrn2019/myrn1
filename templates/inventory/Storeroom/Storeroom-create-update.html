@@ -11,19 +11,19 @@
 		<div class="card-body">
 			<form method="post" enctype="multipart/form-data">{% csrf_token %}
 				<div class="row">
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.Name|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdCity|as_crispy_field }}
 					</div>
-					<div class="col-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.Telephone|as_crispy_field }}
 					</div>
-					<div class="col-2">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.status|as_crispy_field }}
 					</div>
-					<div class="col-10">
+					<div class="col-12">
 						{{ form.Address|as_crispy_field }}
 					</div>
 				</div>

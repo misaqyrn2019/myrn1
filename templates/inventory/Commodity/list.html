@@ -16,43 +16,47 @@
         </a>
     </p>
     {% if object_list %}
-    <div style="min-height:200px;">
-        <div class="row text-center">
-            <div class="col-sm-2"><b>شناسه محصول</b></div>
-            <div class="col-sm-2"><b>نام جنس/کالا</b></div>
-            <div class="col-sm-2"><b>تاریخ ورود کالا</b></div>
-            <div class="col-sm-2"><b>نام انبار</b></div>
-            <div class="col-sm-2"><b>آدرس انبار</b></div>
-            <div class="col-sm-2"><b>عملیات</b></div>
-        </div>
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>شناسه محصول</th>
+                <th>نام جنس/کالا</th>
+                <th>تاریخ ورود کالا</th>
+                <th>نام انبار</th>
+                <th>آدرس انبار</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for item in object_list %}
-            <div class="row text-center">
-                <div class="col-sm-2">
+            <tr>
+                <td data-label="شناسه محصول">
                     <a href="{% url 'inventory:Commodity-Report' item.Id %}" target="_blank">
                         {{item.Id}}
                     </a>
-                </div>
-                <div class="col-sm-2">
+                </td>
+                <td data-label="نام جنس/کالا">
                     <a href="{% url 'inventory:Commodity-Report' item.Id %}" target="_blank">
                         {{item.Name}}
                     </a>
-                </div>
-                <div class="col-sm-2">{{item.EntryDateTime|naturaltime}}</div>
-                <div class="col-sm-2">
+                </td>
+                <td data-label="تاریخ ورود کالا">{{item.EntryDateTime|naturaltime}}</td>
+                <td data-label="نام انبار">
                     <a href="{% url 'inventory:StoreroomListReport' IdStoreroom=item.IdStoreroom.Id %}" target="_blank">
                         {{item.IdStoreroom}}
                     </a>
-                </div>
-                <div class="col-sm-2">{{item.AddressCommodity|safe}}</div>
-                <div class="col-sm-2">
+                </td>
+                <td data-label="آدرس انبار">{{item.AddressCommodity|safe}}</td>
+                <td data-label="عملیات">
                     {% if user.is_superuser or user.is_storekeeper %}
                     <a class="badge text-danger" href="{% url 'inventory:Commodity-Delete' item.pk %}">حذف</a>
                     <a class="badge text-succsess" href="{% url 'inventory:Commodity-update' item.pk %}">ویرایش</a>
                     {% endif %}
-                </div>
-            </div>
+                </td>
+            </tr>
         {% endfor %}
-    </div>
+        </tbody>
+    </table>
     <div class="row pagination">
         <span class="step-links">
             {% if is_paginated %}

@@ -11,7 +11,8 @@ from account.mixins import (
 	FormValidMixin,
 	AuthorAccessMixin,
 	AuthorsAccessMixin,
-	SuperUserAccessMixin,
+	
+    StorekeeperUserAccessMixin
 )
 from django.views.generic import (
 	ListView,
@@ -26,7 +27,6 @@ from django.core.paginator import Paginator
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404
 from account.mixins import AuthorAccessMixin
-from inventory.mixins import StorekeeperUserAccessMixin
 from django.db.models import Q
 from django.utils import timezone
 from inventory.forms import (
@@ -59,7 +59,7 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from django.contrib.auth.models import User
 
-class Dashboard(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class Dashboard(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/Dashboard.html"
     model = Storeroom
 
@@ -89,7 +89,7 @@ class Dashboard(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMix
         return context
 
 # View Storeroom
-class PStoreroomList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class PStoreroomList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
     model = Storeroom
@@ -98,10 +98,7 @@ class PStoreroomList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequir
 
     @login_required(login_url='/login/')
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Storeroom.objects.all()
-        elif self.request.User.is_storekeeper:
-            return Storeroom.objects.filter(author=self.request.user)
+        return Storeroom.objects.all()
 
     @login_required(login_url='/login/')
     def get_object(self):
@@ -115,17 +112,14 @@ class PStoreroomList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequir
         })
         return kwargs
 
-class StoreroomList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class StoreroomList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     login_url = '/login/'
     model = Storeroom
     paginate_by = 10
     template_name = "inventory/Storeroom/storeroom_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Storeroom.objects.all()
-        elif self.request.User.is_storekeeper:
-            return Storeroom.objects.filter(author=self.request.user)
+        return Storeroom.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -137,34 +131,28 @@ class StoreroomList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequire
         })
         return kwargs
 
-class StoreroomCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DefineStoreroom, CreateView):
+class StoreroomCreate(StorekeeperUserAccessMixin,LoginRequiredMixin, DefineStoreroom, CreateView):
     model = Storeroom
     success_url = reverse_lazy('inventory:homeSL')
     template_name = "inventory/Storeroom/Storeroom-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Storeroom.objects.all()
-        else:
-            return Storeroom.objects.filter(author=self.request.user)
+        return Storeroom.objects.all()
 
-class StoreroomUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DefineStoreroom, UpdateView):
+class StoreroomUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin, DefineStoreroom, UpdateView):
     model = Storeroom
     success_url = reverse_lazy('inventory:homeSL')
     template_name = "inventory/Storeroom/Storeroom-create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Storeroom.objects.all()
-        else:
-            return Storeroom.objects.filter(author=self.request.user)
+        return Storeroom.objects.all()
 
-class StoreroomDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class StoreroomDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = Storeroom
     success_url = reverse_lazy('inventory:homeSL')
     template_name = "inventory/Storeroom/Storeroom_confirm_delete.html"
 
-class StoreroomListReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class StoreroomListReport(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/Storeroom/Storeroom_list_Report.html"
     model = Commodity
     lookup_field = "IdStoreroom"
@@ -185,16 +173,13 @@ class StoreroomListReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginR
         return context
 
 # View Customer
-class CustomerList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class CustomerList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = Customer
     paginate_by = 10
     template_name = "inventory/Customer/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Customer.objects.all()
-        elif self.request.User.is_storekeeper:
-            return Customer.objects.filter(author=self.request.user)
+        return Customer.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -206,42 +191,33 @@ class CustomerList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequired
         })
         return kwargs
 
-class CustomerCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DefinedCustomer, CreateView):
+class CustomerCreate(StorekeeperUserAccessMixin,LoginRequiredMixin, DefinedCustomer, CreateView):
     model = Customer
     success_url = reverse_lazy('inventory:homeCU')
     template_name = "inventory/Customer/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Customer.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Customer.objects.filter(author=self.request.user)
+        return Customer.objects.all()
 
-class CustomerUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedCustomer, UpdateView):
+class CustomerUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedCustomer, UpdateView):
     model = Customer
     success_url = reverse_lazy('inventory:homeCU')
     template_name = "inventory/Customer/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Customer.objects.all()
-        else:
-            return Customer.objects.filter(author=self.request.user)
+        return Customer.objects.all()
 
-class CustomerDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class CustomerDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = Customer
     success_url = reverse_lazy('inventory:homeCU')
     template_name = "inventory/Customer/confirm_delete.html"
 
-class CustomerListReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class CustomerListReport(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/Customer/Customer_list_Report.html"
     model = Customer
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Customer.objects.all()
-        elif self.request.User.is_storekeeper:
-            return Customer.objects.filter(author=self.request.user)
+        return Customer.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -254,16 +230,13 @@ class CustomerListReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRe
         return kwargs
 
 #GroupCommodity
-class GroupCommodityList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class GroupCommodityList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = GroupCommodity
     paginate_by = 10
     template_name = "inventory/GroupCommodity/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return GroupCommodity.objects.all()
-        elif self.request.User.is_storekeeper:
-            return GroupCommodity.objects.filter(author=self.request.user)
+        return GroupCommodity.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -275,51 +248,38 @@ class GroupCommodityList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRe
         })
         return kwargs
 
-class GroupCommodityCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DefinedGroupCommodity, CreateView):
+class GroupCommodityCreate(StorekeeperUserAccessMixin,LoginRequiredMixin, DefinedGroupCommodity, CreateView):
     model = GroupCommodity
     success_url = reverse_lazy('inventory:homeGC')
     template_name = "inventory/GroupCommodity/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return GroupCommodity.objects.all()
-        elif self.request.user.is_storekeeper:
-            return GroupCommodity.objects.filter(author=self.request.user)
+        return GroupCommodity.objects.all()
 
-class GroupCommodityUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedGroupCommodity, UpdateView):
+class GroupCommodityUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedGroupCommodity, UpdateView):
     model = GroupCommodity
     success_url = reverse_lazy('inventory:homeGC')
     template_name = "inventory/GroupCommodity/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return GroupCommodity.objects.all()
-        elif self.request.user.is_storekeeper:
-            return GroupCommodity.objects.filter(author=self.request.user)
+        return GroupCommodity.objects.all()
 
-class GroupCommodityDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class GroupCommodityDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = GroupCommodity
     success_url = reverse_lazy('inventory:homeGC')
     template_name = "inventory/GroupCommodity/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return GroupCommodity.objects.all()
-        elif self.request.user.is_storekeeper:
-            return GroupCommodity.objects.filter(author=self.request.user)
-
+        return GroupCommodity.objects.all()
 
 #CategoryCommodity
-class CategoryCommodityList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class CategoryCommodityList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = CategoryCommodity
     paginate_by = 10
     template_name = "inventory/CategoryCommodity/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return CategoryCommodity.objects.all()
-        elif self.request.User.is_storekeeper:
-            return CategoryCommodity.objects.filter(author=self.request.user)
+        return CategoryCommodity.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -331,50 +291,38 @@ class CategoryCommodityList(SuperUserAccessMixin,StorekeeperUserAccessMixin,Logi
         })
         return kwargs
 
-class CategoryCommodityCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefineGroupCommodity, CreateView):
+class CategoryCommodityCreate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefineGroupCommodity, CreateView):
     model = CategoryCommodity
     success_url = reverse_lazy('inventory:homeCC')
     template_name = "inventory/CategoryCommodity/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return CategoryCommodity.objects.all()
-        elif self.request.user.is_storekeeper:
-            return CategoryCommodity.objects.filter(author=self.request.user)
+        return CategoryCommodity.objects.all()
 
-class CategoryCommodityUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,DefineGroupCommodity, UpdateView):
+class CategoryCommodityUpdate(StorekeeperUserAccessMixin,DefineGroupCommodity, UpdateView):
     model = CategoryCommodity
     success_url = reverse_lazy('inventory:homeCC')
     template_name = "inventory/CategoryCommodity/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return CategoryCommodity.objects.all()
-        elif self.request.user.is_storekeeper:
-            return CategoryCommodity.objects.filter(author=self.request.user)
+        return CategoryCommodity.objects.all()
 
-class CategoryCommodityDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin, LoginRequiredMixin,DeleteView):
+class CategoryCommodityDelete(StorekeeperUserAccessMixin, LoginRequiredMixin,DeleteView):
     model = CategoryCommodity
     success_url = reverse_lazy('inventory:homeCC')
     template_name = "inventory/CategoryCommodity/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return CategoryCommodity.objects.all()
-        elif self.request.user.is_storekeeper:
-            return CategoryCommodity.objects.filter(author=self.request.user)
+        return CategoryCommodity.objects.all()
 
 #UnitPack
-class UnitPackList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class UnitPackList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = UnitPack
     paginate_by = 10
     template_name = "inventory/UnitPack/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return UnitPack.objects.all()
-        elif self.request.User.is_storekeeper:
-            return UnitPack.objects.filter(author=self.request.user)
+        return UnitPack.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -386,50 +334,38 @@ class UnitPackList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequired
         })
         return kwargs
 
-class UnitPackCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedUnitPack, CreateView):
+class UnitPackCreate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedUnitPack, CreateView):
     model = UnitPack
     success_url = reverse_lazy('inventory:homeUP')
     template_name = "inventory/UnitPack/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return UnitPack.objects.all()
-        elif self.request.user.is_storekeeper:
-            return UnitPack.objects.filter(author=self.request.user)
+        return UnitPack.objects.all()
 
-class UnitPackUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedUnitPack, UpdateView):
+class UnitPackUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedUnitPack, UpdateView):
     model = UnitPack
     success_url = reverse_lazy('inventory:homeUP')
     template_name = "inventory/UnitPack/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return UnitPack.objects.all()
-        elif self.request.user.is_storekeeper:
-            return UnitPack.objects.filter(author=self.request.user)
+        return UnitPack.objects.all()
 
-class UnitPackDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class UnitPackDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = UnitPack
     success_url = reverse_lazy('inventory:homeUP')
     template_name = "inventory/UnitPack/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return UnitPack.objects.all()
-        elif self.request.user.is_storekeeper:
-            return UnitPack.objects.filter(author=self.request.user)
+        return UnitPack.objects.all()
 
 #Supplier
-class SupplierList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class SupplierList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = Supplier
     paginate_by = 10
     template_name = "inventory/Supplier/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Supplier.objects.all()
-        elif self.request.User.is_storekeeper:
-            return Supplier.objects.filter(author=self.request.user)
+        return Supplier.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -441,40 +377,31 @@ class SupplierList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequired
         })
         return kwargs
 
-class SupplierCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedSupplier, CreateView):
+class SupplierCreate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedSupplier, CreateView):
     model = Supplier
     success_url = reverse_lazy('inventory:homeSU')
     template_name = "inventory/Supplier/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Supplier.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Supplier.objects.filter(author=self.request.user)
+        return Supplier.objects.all()
 
-class SupplierUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedSupplier, UpdateView):
+class SupplierUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedSupplier, UpdateView):
     model = Supplier
     success_url = reverse_lazy('inventory:homeSU')
     template_name = "inventory/Supplier/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Supplier.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Supplier.objects.filter(author=self.request.user)
+        return Supplier.objects.all()
 
-class SupplierDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class SupplierDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = Supplier
     success_url = reverse_lazy('inventory:homeSU')
     template_name = "inventory/Supplier/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Supplier.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Supplier.objects.filter(author=self.request.user)
+        return Supplier.objects.all()
 
-class SupplierListReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class SupplierListReport(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/Supplier/Supplier_list_Report.html"
     model = Commodity
     lookup_field = "IdSupplier"
@@ -496,16 +423,13 @@ class SupplierListReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRe
         return context
 
 #UnitofMeasurement
-class UnitofMeasurementList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class UnitofMeasurementList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = UnitofMeasurement
     paginate_by = 10
     template_name = "inventory/UnitofMeasurement/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return UnitofMeasurement.objects.all()
-        elif self.request.User.is_storekeeper:
-            return UnitofMeasurement.objects.filter(author=self.request.user)
+        return UnitofMeasurement.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -517,51 +441,38 @@ class UnitofMeasurementList(SuperUserAccessMixin,StorekeeperUserAccessMixin,Logi
         })
         return kwargs
 
-class UnitofMeasurementCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedUnitofMeasurement, CreateView):
+class UnitofMeasurementCreate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedUnitofMeasurement, CreateView):
     model = UnitofMeasurement
     success_url = reverse_lazy('inventory:homeUM')
     template_name = "inventory/UnitofMeasurement/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return UnitofMeasurement.objects.all()
-        elif self.request.user.is_storekeeper:
-            return UnitofMeasurement.objects.filter(author=self.request.user)
+        return UnitofMeasurement.objects.all()
 
-class UnitofMeasurementUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedUnitofMeasurement, UpdateView):
+class UnitofMeasurementUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedUnitofMeasurement, UpdateView):
     model = UnitofMeasurement
     success_url = reverse_lazy('inventory:homeUM')
     template_name = "inventory/UnitofMeasurement/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return UnitofMeasurement.objects.all()
-        elif self.request.user.is_storekeeper:
-            return UnitofMeasurement.objects.filter(author=self.request.user)
+        return UnitofMeasurement.objects.all()
 
-class UnitofMeasurementDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class UnitofMeasurementDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = UnitofMeasurement
     success_url = reverse_lazy('inventory:homeUM')
     template_name = "inventory/UnitofMeasurement/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return UnitofMeasurement.objects.all()
-        elif self.request.user.is_storekeeper:
-            return UnitofMeasurement.objects.filter(author=self.request.user)
-
+        return UnitofMeasurement.objects.all()
 
 #Commodity
-class CommodityList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class CommodityList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = Commodity
     paginate_by = 10
     template_name = "inventory/Commodity/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Commodity.objects.all()
-        elif self.request.User.is_storekeeper:
-            return Commodity.objects.filter(author=self.request.user)
+        return Commodity.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -573,40 +484,31 @@ class CommodityList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequire
         })
         return kwargs
 
-class CommodityCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedCommodity, CreateView):
+class CommodityCreate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedCommodity, CreateView):
     model = Commodity
     success_url = reverse_lazy('inventory:homeCO')
     template_name = "inventory/Commodity/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Commodity.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Commodity.objects.filter(author=self.request.user)
+        return Commodity.objects.all()
 
-class CommodityUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedCommodity, UpdateView):
+class CommodityUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedCommodity, UpdateView):
     model = Commodity
     success_url = reverse_lazy('inventory:homeCO')
     template_name = "inventory/Commodity/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Commodity.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Commodity.objects.filter(author=self.request.user)
+        return Commodity.objects.all()
 
-class CommodityDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class CommodityDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = Commodity
     success_url = reverse_lazy('inventory:homeCO')
     template_name = "inventory/Commodity/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Commodity.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Commodity.objects.filter(author=self.request.user)
+        return Commodity.objects.all()
 
-class CommodityListReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class CommodityListReport(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/Commodity/Commodity_list_Report.html"
     model = Commodity
     lookup_field = "IdCommodity"
@@ -625,7 +527,7 @@ class CommodityListReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginR
 
         return context
 
-class CommodityAllListReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class CommodityAllListReport(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/Commodity/Commodity_AllList_Report.html"
     model = Commodity
 
@@ -643,16 +545,13 @@ class CommodityAllListReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,Log
         return context
 
 #drivers
-class driversList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class driversList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = drivers
     paginate_by = 10
     template_name = "inventory/drivers/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return drivers.objects.all()
-        elif self.request.User.is_storekeeper:
-            return drivers.objects.filter(author=self.request.user)
+        return drivers.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -664,48 +563,36 @@ class driversList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredM
         })
         return kwargs
 
-class driversCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,Definedrivers, CreateView):
+class driversCreate(StorekeeperUserAccessMixin,LoginRequiredMixin,Definedrivers, CreateView):
     model = drivers
     success_url = reverse_lazy('inventory:homeDL')
     template_name = "inventory/drivers/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return drivers.objects.all()
-        elif self.request.user.is_storekeeper:
-            return drivers.objects.filter(author=self.request.user)
+        return drivers.objects.all()
 
-class driversUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,Definedrivers, UpdateView):
+class driversUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,Definedrivers, UpdateView):
     model = drivers
     success_url = reverse_lazy('inventory:homeDL')
     template_name = "inventory/drivers/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return drivers.objects.all()
-        elif self.request.user.is_storekeeper:
-            return drivers.objects.filter(author=self.request.user)
+        return drivers.objects.all()
 
-class driversDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class driversDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = drivers
     success_url = reverse_lazy('inventory:homeDL')
     template_name = "inventory/drivers/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return drivers.objects.all()
-        elif self.request.user.is_storekeeper:
-            return drivers.objects.filter(author=self.request.user)
+        return drivers.objects.all()
 
-class DriversReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class DriversReport(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = drivers
     template_name = "inventory/drivers/Drivers_list_Report.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return drivers.objects.all()
-        elif self.request.User.is_storekeeper:
-            return drivers.objects.filter(author=self.request.user)
+        return drivers.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -718,16 +605,13 @@ class DriversReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequire
         return kwargs
 
 #EntryCommodity
-class EntryCommodityList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class EntryCommodityList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = EntryCommodity
     paginate_by = 10
     template_name = "inventory/EntryCommodity/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return EntryCommodity.objects.all()
-        elif self.request.User.is_storekeeper:
-            return EntryCommodity.objects.filter(author=self.request.user)
+        return EntryCommodity.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -739,40 +623,31 @@ class EntryCommodityList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRe
         })
         return kwargs
 
-class EntryCommodityCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedEntryCommodity, CreateView):
+class EntryCommodityCreate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedEntryCommodity, CreateView):
     model = EntryCommodity
     success_url = reverse_lazy('inventory:homeEC')
     template_name = "inventory/EntryCommodity/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return EntryCommodity.objects.all()
-        elif self.request.user.is_storekeeper:
-            return EntryCommodity.objects.filter(author=self.request.user)
+        return EntryCommodity.objects.all()
 
-class EntryCommodityUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedEntryCommodity, UpdateView):
+class EntryCommodityUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedEntryCommodity, UpdateView):
     model = EntryCommodity
     success_url = reverse_lazy('inventory:homeEC')
     template_name = "inventory/EntryCommodity/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return EntryCommodity.objects.all()
-        elif self.request.user.is_storekeeper:
-            return EntryCommodity.objects.filter(author=self.request.user)
+        return EntryCommodity.objects.all()
 
-class EntryCommodityDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class EntryCommodityDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = EntryCommodity
     success_url = reverse_lazy('inventory:homeEC')
     template_name = "inventory/EntryCommodity/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return EntryCommodity.objects.all()
-        elif self.request.user.is_storekeeper:
-            return EntryCommodity.objects.filter(author=self.request.user)
+        return EntryCommodity.objects.all()
 
-class EntryCommodityReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class EntryCommodityReport(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/EntryCommodity/EntryCommodityPerStoreroom.html"
     model = EntryCommodity
     lookup_field = 'IdStoreroom'
@@ -794,16 +669,13 @@ class EntryCommodityReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,Login
 
         return context
 #Transportation
-class TransportationList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class TransportationList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = Transportation
     paginate_by = 10
     template_name = "inventory/Transportation/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Transportation.objects.all()
-        elif self.request.User.is_storekeeper:
-            return Transportation.objects.filter(author=self.request.user)
+        return Transportation.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -815,50 +687,38 @@ class TransportationList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRe
         })
         return kwargs
 
-class TransportationCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedTransportation, CreateView):
+class TransportationCreate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedTransportation, CreateView):
     model = Transportation
     success_url = reverse_lazy('inventory:homeTP')
     template_name = "inventory/Transportation/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Transportation.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Transportation.objects.filter(author=self.request.user)
+        return Transportation.objects.all()
 
-class TransportationUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedTransportation, UpdateView):
+class TransportationUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedTransportation, UpdateView):
     model = Transportation
     success_url = reverse_lazy('inventory:homeTP')
     template_name = "inventory/Transportation/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Transportation.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Transportation.objects.filter(author=self.request.user)
+        return Transportation.objects.all()
 
-class TransportationDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class TransportationDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = Transportation
     success_url = reverse_lazy('inventory:homeTP')
     template_name = "inventory/Transportation/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Transportation.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Transportation.objects.filter(author=self.request.user)
+        return Transportation.objects.all()
 
 #ProductRepaired
-class ProductRepairedList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class ProductRepairedList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = productRepaired
     paginate_by = 10
     template_name = "inventory/productRepaired/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return productRepaired.objects.all()
-        elif self.request.User.is_storekeeper:
-            return productRepaired.objects.filter(author=self.request.user)
+        return productRepaired.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -870,40 +730,31 @@ class ProductRepairedList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginR
         })
         return kwargs
 
-class ProductRepairedCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedProductRepaired, CreateView):
+class ProductRepairedCreate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedProductRepaired, CreateView):
     model = productRepaired
     success_url = reverse_lazy('inventory:homePR')
     template_name = "inventory/productRepaired/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return productRepaired.objects.all()
-        elif self.request.user.is_storekeeper:
-            return productRepaired.objects.filter(author=self.request.user)
+        return productRepaired.objects.all()
 
-class ProductRepairedUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedProductRepaired, UpdateView):
+class ProductRepairedUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedProductRepaired, UpdateView):
     model = productRepaired
     success_url = reverse_lazy('inventory:homePR')
     template_name = "inventory/productRepaired/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return productRepaired.objects.all()
-        elif self.request.user.is_storekeeper:
-            return productRepaired.objects.filter(author=self.request.user)
+        return productRepaired.objects.all()
 
-class ProductRepairedDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class ProductRepairedDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = productRepaired
     success_url = reverse_lazy('inventory:homePR')
     template_name = "inventory/productRepaired/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return productRepaired.objects.all()
-        elif self.request.user.is_storekeeper:
-            return productRepaired.objects.filter(author=self.request.user)
+        return productRepaired.objects.all()
 
-class ProductPerStoreroom(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class ProductPerStoreroom(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/productRepaired/ProductPerStoreroom.html"
     model = productRepaired
     lookup_field = 'IdStoreroom'
@@ -916,16 +767,13 @@ class ProductPerStoreroom(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginR
         return context
 
 #Receipt
-class ReceiptList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class ReceiptList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = Receipt
     paginate_by = 10
     template_name = "inventory/Receipt/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Receipt.objects.all()
-        elif self.request.User.is_storekeeper:
-            return Receipt.objects.filter(author=self.request.user)
+        return Receipt.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -937,40 +785,31 @@ class ReceiptList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredM
         })
         return kwargs
 
-class ReceiptCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedReceipt, CreateView):
+class ReceiptCreate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedReceipt, CreateView):
     model = Receipt
     success_url = reverse_lazy('inventory:homeRE')
     template_name = "inventory/Receipt/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Receipt.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Receipt.objects.filter(author=self.request.user)
+        return Receipt.objects.all()
 
-class ReceiptUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedReceipt, UpdateView):
+class ReceiptUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedReceipt, UpdateView):
     model = Receipt
     success_url = reverse_lazy('inventory:homeRE')
     template_name = "inventory/Receipt/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Receipt.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Receipt.objects.filter(author=self.request.user)
+        return Receipt.objects.all()
 
-class ReceiptDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class ReceiptDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = Receipt
     success_url = reverse_lazy('inventory:homeRE')
     template_name = "inventory/Receipt/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Receipt.objects.all()
-        elif self.request.user.is_storekeeper:
-            return Receipt.objects.filter(author=self.request.user)
+        return Receipt.objects.all()
 
-class ReceiptReportBuy(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class ReceiptReportBuy(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/Receipt/ListBuy.html"
     model = Receipt
 
@@ -980,7 +819,7 @@ class ReceiptReportBuy(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequ
 
         return context
 
-class ReceiptReportSale(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class ReceiptReportSale(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/Receipt/ListSale.html"
     model = Receipt
 
@@ -990,11 +829,10 @@ class ReceiptReportSale(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginReq
 
         return context
 
-class ReceiptReportStoreroomSale(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class ReceiptReportStoreroomSale(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/Receipt/ListReportStoreroomSale.html"
     model = Receipt
     lookup_field = 'IdStoreroom'
-    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1011,7 +849,7 @@ class ReceiptReportStoreroomSale(SuperUserAccessMixin,StorekeeperUserAccessMixin
 
         return context
 
-class ReceiptReportStoreroomBuy(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class ReceiptReportStoreroomBuy(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/Receipt/ListReportStoreroomBuy.html"
     model = Receipt
     lookup_field = 'IdStoreroom'
@@ -1030,16 +868,13 @@ class ReceiptReportStoreroomBuy(SuperUserAccessMixin,StorekeeperUserAccessMixin,
 
         return context
 #SettlementArrived
-class SettlementArrivedList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class SettlementArrivedList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = SettlementArrived
     paginate_by = 10
     template_name = "inventory/SettlementArrived/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return SettlementArrived.objects.all()
-        elif self.request.User.is_storekeeper:
-            return SettlementArrived.objects.filter(author=self.request.user)
+        return SettlementArrived.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -1051,51 +886,38 @@ class SettlementArrivedList(SuperUserAccessMixin,StorekeeperUserAccessMixin,Logi
         })
         return kwargs
 
-class SettlementArrivedCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedSettlementArrived, CreateView):
+class SettlementArrivedCreate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedSettlementArrived, CreateView):
     model = SettlementArrived
     success_url = reverse_lazy('inventory:homeSA')
     template_name = "inventory/SettlementArrived/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return SettlementArrived.objects.all()
-        elif self.request.user.is_storekeeper:
-            return SettlementArrived.objects.filter(author=self.request.user)
+        return SettlementArrived.objects.all()
 
-class SettlementArrivedUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedSettlementArrived, UpdateView):
+class SettlementArrivedUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedSettlementArrived, UpdateView):
     model = SettlementArrived
     success_url = reverse_lazy('inventory:homeSA')
     template_name = "inventory/SettlementArrived/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return SettlementArrived.objects.all()
-        elif self.request.user.is_storekeeper:
-            return SettlementArrived.objects.filter(author=self.request.user)
+        return SettlementArrived.objects.all()
 
-class SettlementArrivedDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class SettlementArrivedDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = SettlementArrived
     success_url = reverse_lazy('inventory:homeSA')
     template_name = "inventory/SettlementArrived/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return SettlementArrived.objects.all()
-        elif self.request.user.is_storekeeper:
-            return SettlementArrived.objects.filter(author=self.request.user)
-
+        return SettlementArrived.objects.all()
 
 #PurchaseRequest
-class PurchaseRequestList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class PurchaseRequestList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     model = PurchaseRequest
     paginate_by = 10
     template_name = "inventory/PurchaseRequest/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return PurchaseRequest.objects.all()
-        elif self.request.User.is_storekeeper:
-            return PurchaseRequest.objects.filter(author=self.request.user)
+        return PurchaseRequest.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)
@@ -1107,40 +929,31 @@ class PurchaseRequestList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginR
         })
         return kwargs
 
-class PurchaseRequestCreate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedPurchaseRequest, CreateView):
+class PurchaseRequestCreate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedPurchaseRequest, CreateView):
     model = PurchaseRequest
     success_url = reverse_lazy('inventory:homePPR')
     template_name = "inventory/PurchaseRequest/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return PurchaseRequest.objects.all()
-        elif self.request.user.is_storekeeper:
-            return PurchaseRequest.objects.filter(author=self.request.user)
+        return PurchaseRequest.objects.all()
 
-class PurchaseRequestUpdate(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedPurchaseRequest, UpdateView):
+class PurchaseRequestUpdate(StorekeeperUserAccessMixin,LoginRequiredMixin,DefinedPurchaseRequest, UpdateView):
     model = PurchaseRequest
     success_url = reverse_lazy('inventory:homePPR')
     template_name = "inventory/PurchaseRequest/create-update.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return PurchaseRequest.objects.all()
-        elif self.request.user.is_storekeeper:
-            return PurchaseRequest.objects.filter(author=self.request.user)
+        return PurchaseRequest.objects.all()
 
-class PurchaseRequestDelete(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
+class PurchaseRequestDelete(StorekeeperUserAccessMixin,LoginRequiredMixin, DeleteView):
     model = PurchaseRequest
     success_url = reverse_lazy('inventory:homePPR')
     template_name = "inventory/PurchaseRequest/confirm_delete.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return PurchaseRequest.objects.all()
-        elif self.request.user.is_storekeeper:
-            return PurchaseRequest.objects.filter(author=self.request.user)
+        return PurchaseRequest.objects.all()
 
-class PurchaseRequestListReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class PurchaseRequestListReport(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/PurchaseRequest/PurchaseRequest_listCommodity_Report.html"
     model = PurchaseRequest
     lookup_field = "IdCommodity"
@@ -1159,7 +972,7 @@ class PurchaseRequestListReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,
 
         return context
 
-class PurchaseRequestListSRReport(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class PurchaseRequestListSRReport(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     template_name = "inventory/PurchaseRequest/PurchaseRequest_listStoreroom_Report.html"
     model = PurchaseRequest
     lookup_field = "IdStoreroom"
@@ -1180,17 +993,14 @@ class PurchaseRequestListSRReport(SuperUserAccessMixin,StorekeeperUserAccessMixi
         return context
 
 #API View
-class storeroomList(SuperUserAccessMixin,StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
+class storeroomList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
     login_url = '/login/'
     model = Storeroom
     paginate_by = 10
     template_name = "inventory/Storeroom/storeroom_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Storeroom.objects.all()
-        elif self.request.User.is_storekeeper:
-            return Storeroom.objects.filter(author=self.request.user)
+        return Storeroom.objects.all()
 
     def get_object(self):
         return User.objects.get(pk = self.request.user.pk)

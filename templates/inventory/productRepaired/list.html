@@ -12,45 +12,49 @@
 
 {% block main %}
     {% if object_list %}
-    <div style="min-height:200px;">
-        <div class="row text-center">
-            <div class="col-sm-1"><b>ردیف</b></div>
-            <div class="col-sm-1"><b>نام کالا</b></div>
-            <div class="col-sm-1"><b>نام مشتری</b></div>
-            <div class="col-sm-1"><b>شماره سریال</b></div>
-            <div class="col-sm-1"><b>تاریخ ثبت</b></div>
-            <div class="col-sm-2"><b>تاریخ تحویل</b></div>
-            <div class="col-sm-2"><b>توضیحات</b></div>
-            <div class="col-sm-1"><b>وضعیت</b></div>
-            <div class="col-sm-1"><b>انبار</b></div>
-            <div class="col-sm-1"><b>عملیات</b></div>
-        </div>
-        {% for item in object_list %}
-            <div class="row text-center">
-                <div class="col-sm-1">{{item.Id}}</div>
-                <div class="col-sm-1">{{item.IdCommodity}}</div>
-                <div class="col-sm-1">{{item.IdCustomer}}</div>
-                <div class="col-sm-1">{{item.SerialNumber}}</div>
-                <div class="col-sm-1">{{item.DateRegistration|naturaltime}}</div>
-                <div class="col-sm-2">{{item.jDateDelivery}}</div>
-                <div class="col-sm-2">{{item.Description|safe}}</div>
-                <div class="col-sm-1">
-                    {% if item.Status == 'Y' %}
-                        <p>تعمیر شده</p>
-                    {% elif item.Status == 'N' %}
-                        <p>تعمیر نشده</p>
-                    {% endif %}
-                </div>
-                <div class="col-sm-1">{{item.IdStoreroom}}</div>
-                <div class="col-sm-1">
-                    {% if user.is_superuser or user.is_storekeeper %}
-                    <a class="badge text-danger" href="{% url 'inventory:productRepaired-Delete' item.pk %}">حذف</a>
-                    <a class="badge text-succsess" href="{% url 'inventory:productRepaired-update' item.pk %}">ویرایش</a>
-                    {% endif %}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+    <table class="tableResponse">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>نام کالا</th>
+                <th>نام مشتری</th>
+                <th>شماره سریال</th>
+                <th>تاریخ ثبت</th>
+                <th>تاریخ تحویل</th>
+                <th>توضیحات</th>
+                <th>وضعیت</th>
+                <th>انبار</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="ردیف">{{item.Id}}</>
+                    <td data-label="نام کالا">{{item.IdCommodity}}</>
+                    <td data-label="نام مشتری">{{item.IdCustomer}}</>
+                    <td data-label="شماره سریال">{{item.SerialNumber}}</>
+                    <td data-label="تاریخ ثبت">{{item.DateRegistration|naturaltime}}</>
+                    <td data-label="تاریخ تحویل">{{item.jDateDelivery}}</>
+                    <td data-label="توضیحات">{{item.Description|safe}}</>
+                    <td data-label="وضعیت">
+                        {% if item.Status == 'Y' %}
+                            <p>تعمیر شده</p>
+                        {% elif item.Status == 'N' %}
+                            <p>تعمیر نشده</p>
+                        {% endif %}
+                    </td>
+                    <td data-label="انبار">{{item.IdStoreroom}}</td>
+                    <td data-label="عملیات">
+                        {% if user.is_superuser or user.is_storekeeper %}
+                        <a class="badge text-danger" href="{% url 'inventory:productRepaired-Delete' item.pk %}">حذف</a>
+                        <a class="badge text-succsess" href="{% url 'inventory:productRepaired-update' item.pk %}">ویرایش</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <div class="row pagination">
         <span class="step-links">
             {% if is_paginated %}

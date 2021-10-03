@@ -11,40 +11,34 @@
 		<div class="card-body">
 			<form method="post" enctype="multipart/form-data">{% csrf_token %}
 				<div class="row">
-					<div class="col-3">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdCommodity|as_crispy_field }}
 						<a href="{% url 'inventory:Commodity-Create' %}">ثبت جنس/کالا</a>
 					</div>
-					<div class="col-3">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdUnitofMeasurement|as_crispy_field }}
 						<a href="{% url 'inventory:UnitofMeasurement-Create' %}">ثبت واحد/سنجش</a>
 					</div>
-					<div class="col-3">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.Count|as_crispy_field }}
 					</div>
-					<div class="col-3">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.DateRequired|as_crispy_field }}
 					</div>
-				</div>
-				<hr>
-				<div class="row">
-					<div class="col-3">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.IdStoreroom|as_crispy_field }}
 						<a href="{% url 'inventory:Create' %}">ثبت انبار</a>
 					</div>
-					<div class="col-3">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.PurchaseSource|as_crispy_field }}
 						<!-- <a href="{% url 'inventory:Supplier-Create' %}" -->
 					</div>
-					<div class="col-3">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.PurchasingOfficer|as_crispy_field }}
 					</div>
-					<div class="col-3">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						{{ form.Status|as_crispy_field }}
 					</div>
-				</div>
-				<hr>
-				<div class="row">
 					<div class="col-12">
 						{{ form.TechnicalSpecifications|as_crispy_field }}
 					</div>

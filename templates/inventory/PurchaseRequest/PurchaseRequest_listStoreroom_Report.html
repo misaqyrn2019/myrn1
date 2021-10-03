@@ -25,38 +25,39 @@
 {% endblock %}
 {% block main %}
 {% if ListCommodity %}
-    <table class="table table-report">
+    <table class="tableResponse">
         <thead>
-            <th colspan="8">خرید نیاز برای انبار <span class="SPNName">{{ StoreroomName.IdStoreroom.Name }}</span></th>
+            <tr>
+                <th>شناسه کالا</th>
+                <th>نام کالا</th>
+                <th>تاریخ نیاز</th>
+                <th>واحد سنجش</th>
+                <th>مقدار</th>
+                <th>مبلغ واحد</th>
+                <th>مبلغ کل (ریال)</th>
+                <th>مامور خرید</th>
+                <th>منبع خرید</th>
+                <th>توضیحات</th>
+            </tr>
         </thead>
-        <tr>
-            <th>شناسه کالا</th>
-            <th>نام کالا</th>
-            <th>تاریخ نیاز</th>
-            <th>واحد سنجش</th>
-            <th>مقدار</th>
-            <th>مبلغ واحد</th>
-            <th>مبلغ کل (ریال)</th>
-            <th>مامور خرید</th>
-            <th>منبع خرید</th>
-            <th>توضیحات</th>
-        </tr>
-    {% for item in ListCommodity %}
-        <tr>
-            <td>{{item.Id}}</td>
-            <td>{{item.IdCommodity.Name}}</td>
-            <td>{{item.jDateRequired}}</td>
-            <td>{{item.IdUnitofMeasurement}}</td>
-            <td>{{item.Count|apnumber}}</td>
-            <td>{{item.IdCommodity.UnitPrice|apnumber|intcomma}}</td>
-            <td>{{item.amount}}</td>
-            <td>{{item.PurchasingOfficer}}</td>
-            <td>{{item.PurchaseSource}}</td>
-            <td>{{item.Description|safe}}</td>
-        </tr>
-    {% empty %}
-        <h2 style="text-align: center;">در این انبار کالایی وارد نشده است</h2>
-    {% endfor %}
+        <tbody>
+            {% for item in ListCommodity %}
+                <tr>
+                    <td data-label="شناسه کالا">{{item.Id}}</td>
+                    <td data-label="نام کالا">{{item.IdCommodity.Name}}</td>
+                    <td data-label="تاریخ نیاز">{{item.jDateRequired}}</td>
+                    <td data-label="واحد سنجش">{{item.IdUnitofMeasurement}}</td>
+                    <td data-label="مقدار">{{item.Count|apnumber}}</td>
+                    <td data-label="مبلغ واحد">{{item.IdCommodity.UnitPrice|apnumber|intcomma}}</td>
+                    <td data-label="مبلغ کل (ریال)">{{item.amount}}</td>
+                    <td data-label="مامور خرید">{{item.PurchasingOfficer}}</td>
+                    <td data-label="منبع خرید">{{item.PurchaseSource}}</td>
+                    <td data-label="توضیحات">{{item.Description|safe}}</td>
+                </tr>
+            {% empty %}
+                <h2 style="text-align: center;">در این انبار کالایی وارد نشده است</h2>
+            {% endfor %}
+        </tbody>
     <tr>
         <td colspan="6">جمع</td>
         <td>{{SumPrice|intcomma}} ريال</td>

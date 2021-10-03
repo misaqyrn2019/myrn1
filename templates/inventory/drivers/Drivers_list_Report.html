@@ -29,37 +29,36 @@
 {% endblock %}
 {% block main %}
 {% if object_list %}
-    <table class="table table-report">
+    <table class="tableResponse">
         <thead>
-            <th colspan="9">لیست راننده ها</th>
+            <tr>
+                <th>شناسه راننده</th>
+                <th>نام</th>
+                <th>فامیل</th>
+                <th>شماره باربری</th>
+                <th>شماره همراه</th>
+                <th>کد ملی</th>
+                <th>شماره پلاک</th>
+                <th>نوع ماشین</th>
+                <th>توضیحات</th>
+            </tr>
         </thead>
-        <tr>
-            <th>شناسه راننده</th>
-            <th>نام</th>
-            <th>فامیل</th>
-            <th>شماره باربری</th>
-            <th>شماره همراه</th>
-            <th>کد ملی</th>
-            <th>شماره پلاک</th>
-            <th>نوع ماشین</th>
-            <th>توضیحات</th>
-        </tr>
-    {% for item in object_list %}
-        <tr>
-            <td>{{item.DriverCode}}</td>
-            <td>{{item.Name}}</td>
-            <td>{{item.Family}}</td>
-            <td>{{item.FreightName}}</td>
-            <td>{{item.Telephone}}</td>
-            <td>{{item.NationalCode}}</td>
-            <td>{{item.LicensePlateNumber}}</td>
-            <td>{{item.CarType}}</td>
-            <td>{{item.Description|safe}}</td>
-        </tr>
-    {% empty %}
-        <h2 style="text-align: center;">هنوز مشتری ثبت نشده است</h2>
-    {% endfor %}
-</table>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td data-label="شناسه راننده">{{item.DriverCode}}</td>
+                    <td data-label="نام">{{item.Name}}</td>
+                    <td data-label="فامیل">{{item.Family}}</td>
+                    <td data-label="شماره باربری">{{item.FreightName}}</td>
+                    <td data-label="شماره همراه">{{item.Telephone}}</td>
+                    <td data-label="کدملی">{{item.NationalCode}}</td>
+                    <td data-label="شماره پلاک">{{item.LicensePlateNumber}}</td>
+                    <td data-label="نوع ماشین">{{item.CarType}}</td>
+                    <td data-label="توضیحات">{{item.Description|safe}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% else %}
     <h2 style="text-align: center;">هنوز مشتری ثبت نشده است</h2>
 {% endif %}
