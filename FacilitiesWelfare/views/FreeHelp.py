@@ -34,7 +34,7 @@ class FreeHelpList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(FreeHelp, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -45,16 +45,10 @@ class FreeHelpCreate(FacilitiesWelfareAccessMixin,DefineFreeHelp,CreateView):
     success_url = reverse_lazy('FacilitiesWelfare:homeFH')
     template_name = "FacilitiesWelfare/FreeHelp/FreeHelp-create-update.html"
 
-    def get_queryset(self):
-        return FreeHelp.objects.all()
-
 class FreeHelpUpdate(FacilitiesWelfareAccessMixin,DefineFreeHelp,UpdateView):
     model = FreeHelp
     success_url = reverse_lazy('FacilitiesWelfare:homeFH')
     template_name = "FacilitiesWelfare/FreeHelp/FreeHelp-create-update.html"
-
-    def get_queryset(self):
-        return FreeHelp.objects.all()
 
 class FreeHelpDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = FreeHelp

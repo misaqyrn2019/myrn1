@@ -33,7 +33,7 @@ class AssistanceList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Assistance, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -44,16 +44,10 @@ class AssistanceCreate(FacilitiesWelfareAccessMixin,DefineAssistance,CreateView)
     success_url = reverse_lazy('FacilitiesWelfare:homeASis')
     template_name = "FacilitiesWelfare/Assistance/Assistance-create-update.html"
 
-    def get_queryset(self):
-        return Assistance.objects.all()
-
 class AssistanceUpdate(FacilitiesWelfareAccessMixin,DefineAssistance,UpdateView):
     model = Assistance
     success_url = reverse_lazy('FacilitiesWelfare:homeASis')
     template_name = "FacilitiesWelfare/Assistance/Assistance-create-update.html"
-
-    def get_queryset(self):
-        return Assistance.objects.all()
 
 class AssistanceDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = Assistance

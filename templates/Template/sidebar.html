@@ -185,9 +185,7 @@
           </li>
         </ul>
       </li>
-      
-    {% endif %}
-        {% if user.is_active %}
+        {% elif user.is_active %}
         {% if 'FacilitiesWelfare' in request.resolver_match.route %}
           <li class="nav-item has-treeview menu-open">
           <a href="#" class="nav-link active">
@@ -197,7 +195,7 @@
         {% endif %}
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
-              خدمات و تسهیلات
+              تسهیلات خدمات و رفاهی
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>

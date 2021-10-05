@@ -33,7 +33,7 @@ class ProjectList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Project, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -44,16 +44,10 @@ class ProjectCreate(FacilitiesWelfareAccessMixin,DefineProjects,CreateView):
     success_url = reverse_lazy('FacilitiesWelfare:homeFPR')
     template_name = "FacilitiesWelfare/Projects/Projects-create-update.html"
 
-    def get_queryset(self):
-        return Project.objects.all()
-
 class ProjectUpdate(FacilitiesWelfareAccessMixin,DefineProjects,UpdateView):
     model = Project
     success_url = reverse_lazy('FacilitiesWelfare:homeFPR')
     template_name = "FacilitiesWelfare/Projects/Projects-create-update.html"
-
-    def get_queryset(self):
-        return Project.objects.all()
 
 class ProjectDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = Project
@@ -108,7 +102,7 @@ class TypeProjectList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(TypeProject, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })

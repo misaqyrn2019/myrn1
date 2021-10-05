@@ -33,7 +33,7 @@ class RewardList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Reward, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -44,16 +44,10 @@ class RewardCreate(FacilitiesWelfareAccessMixin,DefineReward,CreateView):
     success_url = reverse_lazy('FacilitiesWelfare:homeFwR')
     template_name = "FacilitiesWelfare/Reward/Reward-create-update.html"
 
-    def get_queryset(self):
-        return Reward.objects.all()
-
 class RewardUpdate(FacilitiesWelfareAccessMixin,DefineReward,UpdateView):
     model = Reward
     success_url = reverse_lazy('FacilitiesWelfare:homeFwR')
     template_name = "FacilitiesWelfare/Reward/Reward-create-update.html"
-
-    def get_queryset(self):
-        return Reward.objects.all()
 
 class RewardDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = Reward
@@ -68,6 +62,3 @@ class UserReward(LoginRequiredMixin,ListView):
 
     def get_queryset(self):
         return Reward.objects.filter(IdUser=self.request.user)
-
-    def get_object(self):
-        return User.objects.get(pk = self.request.user.pk)

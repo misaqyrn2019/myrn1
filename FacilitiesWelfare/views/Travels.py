@@ -30,10 +30,10 @@ class TravelsList(FacilitiesWelfareAccessMixin,ListView):
         return Travels.objects.all()
 
     def get_object(self):
-        return User.objects.get(pk = self.request.user.pk)
+        return Travels.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Travels, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -44,16 +44,10 @@ class TravelsCreate(FacilitiesWelfareAccessMixin,DefineTravels,CreateView):
     success_url = reverse_lazy('FacilitiesWelfare:homeFwT')
     template_name = "FacilitiesWelfare/Travels/Travels-create-update.html"
 
-    def get_queryset(self):
-        return Travels.objects.all()
-
 class TravelsUpdate(FacilitiesWelfareAccessMixin,DefineTravels,UpdateView):
     model = Travels
     success_url = reverse_lazy('FacilitiesWelfare:homeFwT')
     template_name = "FacilitiesWelfare/Travels/Travels-create-update.html"
-
-    def get_queryset(self):
-        return Travels.objects.all()
 
 class TravelsDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = Travels
@@ -68,6 +62,3 @@ class UserTravels(LoginRequiredMixin,ListView):
 
     def get_queryset(self):
         return Travels.objects.filter(IdUser=self.request.user)
-
-    def get_object(self):
-        return Travels.objects.get(pk = self.request.user.pk)

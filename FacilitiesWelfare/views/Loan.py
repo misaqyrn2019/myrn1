@@ -35,7 +35,7 @@ class LoanList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Loan, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -46,16 +46,10 @@ class LoanCreate(FacilitiesWelfareAccessMixin,DefineLoan,CreateView):
     success_url = reverse_lazy('FacilitiesWelfare:homeFwL')
     template_name = "FacilitiesWelfare/Loan/Loan-create-update.html"
 
-    def get_queryset(self):
-        return Loan.objects.all()
-
 class LoanUpdate(FacilitiesWelfareAccessMixin,DefineLoan,UpdateView):
     model = Loan
     success_url = reverse_lazy('FacilitiesWelfare:homeFwL')
     template_name = "FacilitiesWelfare/Loan/Loan-create-update.html"
-
-    def get_queryset(self):
-        return Loan.objects.all()
 
 class LoanDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = Loan
@@ -75,7 +69,7 @@ class RLoanList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Loan, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -94,7 +88,7 @@ class LoanListForReg(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Loan, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -120,7 +114,7 @@ class UserLoanList(LoginRequiredMixin,ListView):
             Q(EndDateTime__gte=datetime.today()))
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Loan, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -150,7 +144,7 @@ class UserLoanList2(LoginRequiredMixin,ListView):
         )
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(RegisterLoan, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })

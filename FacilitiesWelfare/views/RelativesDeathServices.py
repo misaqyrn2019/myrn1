@@ -33,7 +33,7 @@ class RelativesDeathServicesList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(RelativesDeathServices, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -44,24 +44,15 @@ class RelativesDeathServicesCreate(FacilitiesWelfareAccessMixin,DefineRelativesD
     success_url = reverse_lazy('FacilitiesWelfare:homeRDS')
     template_name = "FacilitiesWelfare/RelativesDeathServices/RelativesDeathServices-create-update.html"
 
-    def get_queryset(self):
-        return RelativesDeathServices.objects.all()
-
 class RelativesDeathServicesUpdate(FacilitiesWelfareAccessMixin,DefineRelativesDeathServices,UpdateView):
     model = RelativesDeathServices
     success_url = reverse_lazy('FacilitiesWelfare:homeRDS')
     template_name = "FacilitiesWelfare/RelativesDeathServices/RelativesDeathServices-create-update.html"
 
-    def get_queryset(self):
-        return RelativesDeathServices.objects.all()
-
 class RelativesDeathServicesDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = RelativesDeathServices
     success_url = reverse_lazy('FacilitiesWelfare:homeRDS')
     template_name = "FacilitiesWelfare/RelativesDeathServices/RelativesDeathServices_confirm_delete.html"
-
-    def get_queryset(self):
-        return RelativesDeathServices.objects.all()
 
 class UserRelativesDeathServices(LoginRequiredMixin,ListView):
     login_url = '/login/'

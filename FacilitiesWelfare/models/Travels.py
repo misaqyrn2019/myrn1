@@ -24,7 +24,7 @@ class Travels(models.Model):
         verbose_name_plural = "سفرها"
 
     def __str__(self):
-        return self.Id
+        return str(self.Id)
 
     def jStartDateTime(self):
         return jalali_converterWT(self.StartDateTime)

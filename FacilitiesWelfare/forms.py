@@ -1,5 +1,6 @@
 from django import forms
 from FacilitiesWelfare.models import *
+from django.contrib.auth.forms import UserCreationForm
 
 class DefineProjects(forms.ModelForm):
 	class Meta:
@@ -47,6 +48,11 @@ class DefineOrganizationalHouse(forms.ModelForm):
 		fields = ['Id','Title','IdCity','Address','PostalCode','Pelaque','Unit','Floor','DateRegister','Description']
 
 class DefineRegisterOrganizationalHouse(forms.ModelForm):
+	class Meta:
+		model = RegisterOrganizationalHouse
+		fields = ['Id','IdUser','IdOrganizationHouse','DateExpire','IsVerify']
+
+class FormRegisterOrganizationalHouse(UserCreationForm):
 	class Meta:
 		model = RegisterOrganizationalHouse
 		fields = ['Id','IdUser','IdOrganizationHouse','DateExpire','IsVerify']

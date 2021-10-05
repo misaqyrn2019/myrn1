@@ -106,7 +106,7 @@ class PStoreroomList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
 
     @login_required(login_url='/login/')
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Storeroom, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -125,7 +125,7 @@ class StoreroomList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Storeroom, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -185,7 +185,7 @@ class CustomerList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Customer, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -223,7 +223,7 @@ class CustomerListReport(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView)
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Customer, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -242,7 +242,7 @@ class GroupCommodityList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView)
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(GroupCommodity, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -285,7 +285,7 @@ class CategoryCommodityList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListVi
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(CategoryCommodity, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -328,7 +328,7 @@ class UnitPackList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(UnitPack, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -371,7 +371,7 @@ class SupplierList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Supplier, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -435,7 +435,7 @@ class UnitofMeasurementList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListVi
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(UnitofMeasurement, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -478,7 +478,7 @@ class CommodityList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Commodity, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -557,7 +557,7 @@ class driversList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(drivers, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -598,7 +598,7 @@ class DriversReport(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(drivers, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -617,7 +617,7 @@ class EntryCommodityList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView)
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(EntryCommodity, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -681,7 +681,7 @@ class TransportationList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView)
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Transportation, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -724,7 +724,7 @@ class ProductRepairedList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(productRepaired, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -779,7 +779,7 @@ class ReceiptList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Receipt, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -880,7 +880,7 @@ class SettlementArrivedList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListVi
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(SettlementArrived, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -923,7 +923,7 @@ class PurchaseRequestList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(PurchaseRequest, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -1006,7 +1006,7 @@ class storeroomList(StorekeeperUserAccessMixin,LoginRequiredMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(Storeroom, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })

@@ -33,7 +33,7 @@ class RegisterOrganizationalHouseList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(RegisterOrganizationalHouse, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -44,16 +44,10 @@ class RegisterOrganizationalHouseCreate(FacilitiesWelfareAccessMixin,DefineRegis
     success_url = reverse_lazy('FacilitiesWelfare:homeROH')
     template_name = "FacilitiesWelfare/OrganizationalHouse/RegisterOrganizationalHouse-create-update.html"
 
-    def get_queryset(self):
-        return RegisterOrganizationalHouse.objects.all()
-
 class RegisterOrganizationalHouseUpdate(FacilitiesWelfareAccessMixin,DefineRegisterOrganizationalHouse,UpdateView):
     model = RegisterOrganizationalHouse
     success_url = reverse_lazy('FacilitiesWelfare:homeROH')
     template_name = "FacilitiesWelfare/OrganizationalHouse/RegisterOrganizationalHouse-create-update.html"
-
-    def get_queryset(self):
-        return RegisterOrganizationalHouse.objects.all()
 
 class RegisterOrganizationalHouseDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = RegisterOrganizationalHouse

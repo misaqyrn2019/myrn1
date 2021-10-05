@@ -32,7 +32,7 @@ class RegisterProjectList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(RegisterProject, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -43,16 +43,10 @@ class RegisterProjectCreate(FacilitiesWelfareAccessMixin,DefineRegisterProjects,
     success_url = reverse_lazy('FacilitiesWelfare:homeRPR')
     template_name = "FacilitiesWelfare/RegisterProjects/RegisterProjects-create-update.html"
 
-    def get_queryset(self):
-        return RegisterProject.objects.all()
-
 class RegisterProjectUpdate(FacilitiesWelfareAccessMixin,DefineRegisterProjects,UpdateView):
     model = RegisterProject
     success_url = reverse_lazy('FacilitiesWelfare:homeRPR')
     template_name = "FacilitiesWelfare/RegisterProjects/RegisterProjects-create-update.html"
-
-    def get_queryset(self):
-        return RegisterProject.objects.all()
 
 class RegisterProjectDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = RegisterProject

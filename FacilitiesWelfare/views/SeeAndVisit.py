@@ -33,7 +33,7 @@ class SeeAndVisitList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(SeeAndVisit, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -44,16 +44,10 @@ class SeeAndVisitCreate(FacilitiesWelfareAccessMixin,DefineSeeAndVisit,CreateVie
     success_url = reverse_lazy('FacilitiesWelfare:homeSAV')
     template_name = "FacilitiesWelfare/SeeAndVisit/SeeAndVisit-create-update.html"
 
-    def get_queryset(self):
-        return SeeAndVisit.objects.all()
-
 class SeeAndVisitUpdate(FacilitiesWelfareAccessMixin,DefineSeeAndVisit,UpdateView):
     model = SeeAndVisit
     success_url = reverse_lazy('FacilitiesWelfare:homeSAV')
     template_name = "FacilitiesWelfare/SeeAndVisit/SeeAndVisit-create-update.html"
-
-    def get_queryset(self):
-        return SeeAndVisit.objects.all()
 
 class SeeAndVisitDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = SeeAndVisit

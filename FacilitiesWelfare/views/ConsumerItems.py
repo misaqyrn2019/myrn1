@@ -36,7 +36,7 @@ class ConsumerItemsList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(ConsumerItems, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -47,16 +47,10 @@ class ConsumerItemsCreate(FacilitiesWelfareAccessMixin,DefineConsumerItems,Creat
     success_url = reverse_lazy('FacilitiesWelfare:homeCI')
     template_name = "FacilitiesWelfare/ConsumerItems/ConsumerItems-create-update.html"
 
-    def get_queryset(self):
-        return ConsumerItems.objects.all()
-
 class ConsumerItemsUpdate(FacilitiesWelfareAccessMixin,DefineConsumerItems,UpdateView):
     model = ConsumerItems
     success_url = reverse_lazy('FacilitiesWelfare:homeCI')
     template_name = "FacilitiesWelfare/ConsumerItems/ConsumerItems-create-update.html"
-
-    def get_queryset(self):
-        return ConsumerItems.objects.all()
 
 class ConsumerItemsDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = ConsumerItems

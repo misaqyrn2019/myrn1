@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.db.models.query_utils import select_related_descend
+from django.shortcuts import render,redirect
+from django.urls import reverse
 from account.mixins import (
 	FieldsMixin,
 	FormValidMixin,
@@ -37,7 +39,7 @@ class ConsumerItemsRegisterList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(ConsumerItemsRegister, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -48,16 +50,10 @@ class ConsumerItemsRegisterCreate(FacilitiesWelfareAccessMixin,DefineConsumerIte
     success_url = reverse_lazy('FacilitiesWelfare:homeCIR')
     template_name = "FacilitiesWelfare/ConsumerItemsRegister/ConsumerItemsRegister-create-update.html"
 
-    def get_queryset(self):
-        return ConsumerItemsRegister.objects.all()
-
 class ConsumerItemsRegisterUpdate(FacilitiesWelfareAccessMixin,DefineConsumerItemsRegister,UpdateView):
     model = ConsumerItemsRegister
     success_url = reverse_lazy('FacilitiesWelfare:homeCIR')
     template_name = "FacilitiesWelfare/ConsumerItemsRegister/ConsumerItemsRegister-create-update.html"
-
-    def get_queryset(self):
-        return ConsumerItemsRegister.objects.all()
 
 class ConsumerItemsRegisterDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = ConsumerItemsRegister
@@ -68,6 +64,21 @@ class ConsumerItemsRegisterUserDelete(FWAccessMixin,DeleteView):
     model = ConsumerItemsRegister
     success_url = reverse_lazy('FacilitiesWelfare:ConsumerItemsRegister-List-User')
     template_name = "FacilitiesWelfare/ConsumerItemsRegister/ConsumerItemsRegisterUser_confirm_delete.html"
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        IdConsumerItems = self.kwargs.get('pk')
+        IdUser = self.request.user.pk
+        User = self.request.user
+
+        ThisItemRegCount = ConsumerItemsRegister.objects.filter(Id = IdConsumerItems)
+
+        for item in ThisItemRegCount:
+            if User == item.IdUser:
+                self.object.delete();
+
+        return redirect(reverse('FacilitiesWelfare:ConsumerItemsRegister-List-User'))
 
 class UserConsumerItemsRegister(LoginRequiredMixin,ListView):
     login_url = '/login/'
@@ -102,3 +113,17 @@ class UserRegisterConsumerItems2(LoginRequiredMixin,DefineConsumerItemsRegister,
     def get_queryset(self,**kwargs):
         pk=self.kwargs.get('pk')
         return pk
+
+    def form_valid(self,form):
+        form = form.save(commit=False)
+        IdConsumerItems = self.request.POST.get('IdConsumerItems')
+        IdUser = self.request.POST.get('IdUser')
+        ThisItemRegCount = ConsumerItemsRegister.objects.filter(
+                Q(IdUser = IdUser) & Q(IdConsumerItems = IdConsumerItems)
+            ).count()
+        if ThisItemRegCount == 0:
+            form.IsReceived = "N"
+            form.save()
+            return redirect(reverse('FacilitiesWelfare:ConsumerItemsRegister-List-User'))
+        else:
+            return redirect(reverse('FacilitiesWelfare:ConsumerItemsRegister-List-User'))

@@ -34,7 +34,7 @@ class CashAssistanceList(FacilitiesWelfareAccessMixin,ListView):
         return User.objects.get(pk = self.request.user.pk)
 
     def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
+        kwargs = super(CashAssistance, self).get_form_kwargs()
         kwargs.update({
             'user': self.request.user
         })
@@ -45,16 +45,10 @@ class CashAssistanceCreate(FacilitiesWelfareAccessMixin,DefineCachAssistance,Cre
     success_url = reverse_lazy('FacilitiesWelfare:homeCA')
     template_name = "FacilitiesWelfare/CashAssistance/CashAssistance-create-update.html"
 
-    def get_queryset(self):
-        return CashAssistance.objects.all()
-
 class CashAssistanceUpdate(FacilitiesWelfareAccessMixin,DefineCachAssistance,UpdateView):
     model = CashAssistance
     success_url = reverse_lazy('FacilitiesWelfare:homeCA')
     template_name = "FacilitiesWelfare/CashAssistance/CashAssistance-create-update.html"
-
-    def get_queryset(self):
-        return CashAssistance.objects.all()
 
 class CashAssistanceDelete(FacilitiesWelfareAccessMixin,DeleteView):
     model = CashAssistance
