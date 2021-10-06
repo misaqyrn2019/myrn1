@@ -70,7 +70,7 @@ class DefineSeeAndVisit(forms.ModelForm):
 class DefineConsumerItems(forms.ModelForm):
 	class Meta:
 		model = ConsumerItems
-		fields = ['Id','Title','TypeAssistance','Items','DateRegister','DateExpire','Description']
+		fields = ['Id','Title','TypeAssistance','Items','Price','DateRegister','DateExpire','Description']
 
 class DefineConsumerItemsRegister(forms.ModelForm):
 	class Meta:
