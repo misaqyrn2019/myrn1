@@ -72,11 +72,10 @@ class ConsumerItemsRegisterUserDelete(FWAccessMixin,DeleteView):
         IdUser = self.request.user.pk
         User = self.request.user
 
-        ThisItemRegCount = ConsumerItemsRegister.objects.filter(Id = IdConsumerItems)
-
-        for item in ThisItemRegCount:
-            if User == item.IdUser:
-                self.object.delete();
+        ConsumerItemsRegister.objects.filter(
+            Q(Id = IdConsumerItems) &
+            Q(IdUser = IdUser)
+        ).delete()
 
         return redirect(reverse('FacilitiesWelfare:ConsumerItemsRegister-List-User'))
 
